@@ -17,13 +17,13 @@ class StudentSubmission
     #[ORM\JoinColumn(nullable: false)]
     private ?Program $program = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?bool $passport = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?bool $cv = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?bool $recommendationLetter = null;
 
     #[ORM\Column(nullable: true)]
@@ -55,7 +55,7 @@ class StudentSubmission
         return $this;
     }
 
-    public function getPassport(): ?string
+    public function isPassport(): ?bool
     {
         return $this->passport;
     }
@@ -67,7 +67,7 @@ class StudentSubmission
         return $this;
     }
 
-    public function getCv(): ?string
+    public function isCv(): ?bool
     {
         return $this->cv;
     }
@@ -79,7 +79,7 @@ class StudentSubmission
         return $this;
     }
 
-    public function getRecommendationLetter(): ?string
+    public function isRecommendationLetter(): ?bool
     {
         return $this->recommendationLetter;
     }

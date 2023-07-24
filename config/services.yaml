@@ -8,7 +8,8 @@ parameters:
 services:
   App\Entity\Program:
     autowire: true
-
+  App\Entity\ProgramSubmission:
+    public: true
   # default configuration for services in *this* file
   _defaults:
     autowire: true # Automatically injects dependencies in your services.

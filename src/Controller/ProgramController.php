@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Repository\ProgramRepository;
 use App\Entity\Program;
 use App\Form\ProgramSubmissionFormType;
+use App\Form\DynamicProgramSubmissionFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ProgramSubmission;
+use App\Entity\StudentSubmission;
 
 class ProgramController extends AbstractController
 {
@@ -32,49 +34,49 @@ class ProgramController extends AbstractController
         ]);
     }
 
-   // ProgramController.php
+    #[Route('/submit/{id}', name: 'app_program_submit')]
+    public function submitProgram(ProgramRepository $programRepository, ProgramSubmission $programSubmission, int $id, Request $request)
+    {
+        $program = $programRepository->find($id);
+        $programSubmission = $program->getProgramSubmission(); // Assuming you have a method to get the associated ProgramSubmission for a Program
+        
+        if (!$programSubmission) {
+            // If there is no ProgramSubmission associated with the Program, return an error or handle it as needed
+            // For example, you could redirect back to the program listing page with a flash message.
+            return $this->redirectToRoute('app_program');
+        }
 
-// ...
+        // Create a new instance of the StudentSubmission entity
+        $studentSubmission = new StudentSubmission();
+        $studentSubmission->setProgram($program);
 
-#[Route('/program/{id}/submit', name: 'app_program_submit')]
-public function submitProgram(Program $program, Request $request): Response
-{
-    // Fetch the ProgramSubmission for the given Program
-    $programSubmission = $program->getProgramSubmission();
+        // Create the form using the DynamicProgramSubmissionFormType and pass the ProgramSubmission data
+        $form = $this->createForm(DynamicProgramSubmissionFormType::class, $programSubmission);
 
-    // Create a new FormBuilder
-    $formBuilder = $this->createFormBuilder();
+        // Handle form submission
+        $form->handleRequest($request);
 
-    // Add form fields based on the ProgramSubmission properties
-    if ($programSubmission->isCvNeeded()) {
-        $formBuilder->add('cv', FileType::class, [
-            'label' => 'CV Upload',
-            // Add any other options you need for this field
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($studentSubmission);
+            $entityManager->flush();
+
+            // Redirect to a success page or show a success message
+            // Example:
+            $this->addFlash('success', 'Your submission has been saved successfully!');
+            return $this->redirectToRoute('app_program');
+        }
+
+        return $this->render('program/submit_form.html.twig', [
+            'form' => $form->createView(), 'program' => $program,
         ]);
     }
-
-    // Add other fields based on other properties of ProgramSubmission
-
-    $form = $formBuilder->getForm();
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Get the submitted form data and process it as needed
-        $formData = $form->getData();
-        // ... Process the form data ...
-    }
-
-    return $this->render('program/submit_form.html.twig', [
-        'program' => $program,
-        'form' => $form->createView(),
-    ]);
-}
-
 
     #[Route('/program/{id}/submission', name: 'app_program_submission')]
     public function submissionForm(ProgramRepository $programRepository, int $id, Request $request): Response
     {
         $program = $programRepository->find($id);
+        
         $form = $this->createForm(ProgramSubmissionFormType::class);
 
         $form->handleRequest($request);

@@ -13,8 +13,8 @@ class ProgramSubmission
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $nationality = null;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $nationalityNeeded = false;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $passportNumber = null;
@@ -53,9 +53,9 @@ class ProgramSubmission
         return $this->id;
     }
 
-    public function getNationality(): ?string
+    public function isNationalityNeeded(): ?bool
     {
-        return $this->nationality;
+        return $this->nationalityNeeded;
     }
 
     public function getPassportNumber(): ?string
@@ -110,9 +110,9 @@ class ProgramSubmission
 
     // Setters
 
-    public function setNationality(?string $nationality): self
+    public function setNationalityNeeded(?bool $nationalityNeeded): self
     {
-        $this->nationality = $nationality;
+        $this->nationalityNeeded = $nationalityNeeded;
         return $this;
     }
 
