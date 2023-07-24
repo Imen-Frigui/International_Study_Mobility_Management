@@ -29,6 +29,15 @@ class Program
     #[ORM\Column(length: 255)]
     private ?string $eligibilityCriteria = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $documentsNeeded = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $link = null;
+
+    #[ORM\ManyToOne(inversedBy: 'programs')]
+    private ?University $University = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +99,42 @@ class Program
     public function setEligibilityCriteria(string $eligibilityCriteria): static
     {
         $this->eligibilityCriteria = $eligibilityCriteria;
+
+        return $this;
+    }
+
+    public function getDocumentsNeeded(): ?string
+    {
+        return $this->documentsNeeded;
+    }
+
+    public function setDocumentsNeeded(string $documentsNeeded): static
+    {
+        $this->documentsNeeded = $documentsNeeded;
+
+        return $this;
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(string $link): static
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    public function getUniversity(): ?University
+    {
+        return $this->University;
+    }
+
+    public function setUniversity(?University $University): static
+    {
+        $this->University = $University;
 
         return $this;
     }
