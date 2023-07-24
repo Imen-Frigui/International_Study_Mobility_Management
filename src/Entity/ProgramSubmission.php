@@ -43,10 +43,9 @@ class ProgramSubmission
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $phone = null;
 
-    #[ORM\ManyToOne(targetEntity: Program::class, inversedBy: 'submissions')]
+    #[ORM\ManyToOne(targetEntity: Program::class, inversedBy: 'submissions', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Program $program = null;
-
     // Getters
 
     public function getId(): ?int

@@ -43,8 +43,9 @@ class ProgramController extends AbstractController
     }*/
 
     #[Route('/program/{id}/submission', name: 'app_program_submission')]
-    public function submissionForm(Program $program, Request $request): Response
+    public function submissionForm(ProgramRepository $programRepository, int $id, Request $request): Response
     {
+        $program = $programRepository->find($id);
         $form = $this->createForm(ProgramSubmissionFormType::class);
 
         $form->handleRequest($request);
@@ -55,7 +56,6 @@ class ProgramController extends AbstractController
             // Assuming you have a ProgramSubmission entity to save the form data
             $submission = new ProgramSubmission();
             $submission->setProgram($program);
-            $submission->setPassport($formData['passport']);
             $submission->setCv($formData['cv']);
             // Set other form fields as needed
 

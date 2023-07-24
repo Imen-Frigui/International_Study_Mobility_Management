@@ -1,24 +1,24 @@
-{% extends 'base.html.twig' %}
+{% extends 'base1.html.twig' %}
 
 {% block title %}Submission Form -
 	{{ program.title }}
 {% endblock %}
 
-{% block content %}
+{% block body %}
 	<h1>{{ program.title }}</h1>
-	<p>University:
-		{{ program.university.name }}</p>
+	<p>University:</p>
 	<p>Link:
 		<a href="{{ program.link }}">{{ program.link }}</a>
 	</p>
 	<p>Documents Needed:
 		{{ program.documentsNeeded }}</p>
 	<p>Submission Deadline:
-		{{ program.submissionDeadline|date("m/d/Y") }}</p>
 
-	{# Render the form #}
-	<form method="post">
-		{{ form_widget(form) }}
-		<button type="submit">Save</button>
-	</form>
+		{# Render the form #}
+		<form method="post">
+			{{ form_widget(form) }}
+			<button type="submit">Save</button>
+		</form>
+	</p>
+
 {% endblock %}
