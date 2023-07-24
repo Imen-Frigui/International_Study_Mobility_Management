@@ -41,11 +41,15 @@ class Program
     private ?University $University = null;
 
     #[ORM\OneToMany(mappedBy: 'program', targetEntity: ProgramSubmission::class)]
-    private Collection $passport;
+    private Collection $programSubmission;
+
+    #[ORM\OneToMany(mappedBy: 'program', targetEntity: StudentSubmission::class)]
+    private Collection $studentSubmission;
 
     public function __construct()
     {
-        $this->passport = new ArrayCollection();
+        $this->programSubmission = new ArrayCollection();
+        $this->studentSubmission = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,27 +156,57 @@ class Program
     /**
      * @return Collection<int, ProgramSubmission>
      */
-    public function getPassport(): Collection
+    public function getProgramSubmission(): Collection
     {
-        return $this->passport;
+        return $this->programSubmission;
     }
 
-    public function addPassport(ProgramSubmission $passport): static
+    public function addProgramSubmission(ProgramSubmission $programSubmission): static
     {
-        if (!$this->passport->contains($passport)) {
-            $this->passport->add($passport);
-            $passport->setProgram($this);
+        if (!$this->programSubmission->contains($programSubmission)) {
+            $this->programSubmission->add($programSubmission);
+            $programSubmission->setProgram($this);
         }
 
         return $this;
     }
 
-    public function removePassport(ProgramSubmission $passport): static
+    public function removeProgramSubmission(ProgramSubmission $programSubmission): static
     {
-        if ($this->passport->removeElement($passport)) {
+        if ($this->programSubmission->removeElement($programSubmission)) {
             // set the owning side to null (unless already changed)
-            if ($passport->getProgram() === $this) {
-                $passport->setProgram(null);
+            if ($programSubmission->getProgram() === $this) {
+                $programSubmission->setProgram(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StudentSubmission>
+     */
+    public function getStudentSubmission(): Collection
+    {
+        return $this->studentSubmission;
+    }
+
+    public function addStudentSubmission(StudentSubmission $studentSubmission): static
+    {
+        if (!$this->studentSubmission->contains($studentSubmission)) {
+            $this->studentSubmission->add($studentSubmission);
+            $studentSubmission->setProgram($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudentSubmission(StudentSubmission $studentSubmission): static
+    {
+        if ($this->studentSubmission->removeElement($studentSubmission)) {
+            // set the owning side to null (unless already changed)
+            if ($studentSubmission->getProgram() === $this) {
+                $studentSubmission->setProgram(null);
             }
         }
 

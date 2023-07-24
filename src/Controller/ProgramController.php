@@ -32,15 +32,44 @@ class ProgramController extends AbstractController
         ]);
     }
 
-   /* #[Route('/program/{id}/submission', name: 'app_program_submission')]
-    public function submissionForm(ProgramRepository $programRepository, int $id): Response
-    {
-        $program = $programRepository->find($id);
+   // ProgramController.php
 
-        return $this->render('program/submission_form.html.twig', [
-            'program' => $program,
+// ...
+
+#[Route('/program/{id}/submit', name: 'app_program_submit')]
+public function submitProgram(Program $program, Request $request): Response
+{
+    // Fetch the ProgramSubmission for the given Program
+    $programSubmission = $program->getProgramSubmission();
+
+    // Create a new FormBuilder
+    $formBuilder = $this->createFormBuilder();
+
+    // Add form fields based on the ProgramSubmission properties
+    if ($programSubmission->isCvNeeded()) {
+        $formBuilder->add('cv', FileType::class, [
+            'label' => 'CV Upload',
+            // Add any other options you need for this field
         ]);
-    }*/
+    }
+
+    // Add other fields based on other properties of ProgramSubmission
+
+    $form = $formBuilder->getForm();
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Get the submitted form data and process it as needed
+        $formData = $form->getData();
+        // ... Process the form data ...
+    }
+
+    return $this->render('program/submit_form.html.twig', [
+        'program' => $program,
+        'form' => $form->createView(),
+    ]);
+}
+
 
     #[Route('/program/{id}/submission', name: 'app_program_submission')]
     public function submissionForm(ProgramRepository $programRepository, int $id, Request $request): Response
