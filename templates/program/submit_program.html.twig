@@ -1,0 +1,12 @@
+{% extends 'base1.html.twig' %}
+
+{% block body %}
+	<h1>{{ program.title }}</h1>
+	{# Loop through the forms and render them #}
+	{% for form in forms %}
+		<form method="post">
+			{{ form_widget(form) }}
+			<button type="submit">Submit</button>
+		</form>
+	{% endfor %}
+{% endblock %}

@@ -15,7 +15,7 @@ class DynamicProgramSubmissionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $programSubmission = $options['data'];
-
+        $programSubmissions = $programSubmission->getProgram()->getProgramSubmission();
         $builder
 
             ->add('passportNumber', null, [
