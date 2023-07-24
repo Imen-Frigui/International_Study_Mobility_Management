@@ -1,6 +1,6 @@
 {% extends 'base1.html.twig' %}
 
-{% block title %}Hello ProgramController!
+{% block title %}Home Page
 {% endblock %}
 
 {% block body %}
@@ -54,10 +54,10 @@
 								<p>Documents Needed:
 									{{ program.documentsNeeded }}</p>
 								<div class="read-more">
-									<a href="blog-single.html">Read More</a>
+									<a href="{{ path('app_program_details', { 'id': program.id }) }}">Read More</a>
+									<a href="{{ path('app_program_submission', { 'id': program.id }) }}">Submission Form</a>
 								</div>
 							</div>
-
 						</article>
 					{% endfor %}
 

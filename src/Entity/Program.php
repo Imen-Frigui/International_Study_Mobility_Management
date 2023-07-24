@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProgramRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,6 +39,14 @@ class Program
 
     #[ORM\ManyToOne(inversedBy: 'programs')]
     private ?University $University = null;
+
+    #[ORM\OneToMany(mappedBy: 'program', targetEntity: ProgramSubmission::class)]
+    private Collection $passport;
+
+    public function __construct()
+    {
+        $this->passport = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -135,6 +145,36 @@ class Program
     public function setUniversity(?University $University): static
     {
         $this->University = $University;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProgramSubmission>
+     */
+    public function getPassport(): Collection
+    {
+        return $this->passport;
+    }
+
+    public function addPassport(ProgramSubmission $passport): static
+    {
+        if (!$this->passport->contains($passport)) {
+            $this->passport->add($passport);
+            $passport->setProgram($this);
+        }
+
+        return $this;
+    }
+
+    public function removePassport(ProgramSubmission $passport): static
+    {
+        if ($this->passport->removeElement($passport)) {
+            // set the owning side to null (unless already changed)
+            if ($passport->getProgram() === $this) {
+                $passport->setProgram(null);
+            }
+        }
 
         return $this;
     }
