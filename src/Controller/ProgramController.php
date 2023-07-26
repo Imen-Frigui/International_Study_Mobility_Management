@@ -25,6 +25,7 @@ class ProgramController extends AbstractController
             'programs' => $programs,
         ]);
     }
+
     #[Route('/program/{id}', name:'app_program_details')]
     public function programDetails(ProgramRepository $programRepository, int $id):Response
     {
@@ -54,8 +55,6 @@ class ProgramController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($programSubmission);
                 $entityManager->flush();
-
-                // Redirect or show a success message
             }
         }
 
