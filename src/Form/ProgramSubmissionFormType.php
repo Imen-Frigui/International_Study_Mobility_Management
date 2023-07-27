@@ -12,10 +12,38 @@ class ProgramSubmissionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('cv', ChoiceType::class, [
+        ->add('CV', ChoiceType::class, [
             'choices' => [
-                'Not Needed' => 'not_needed',
-                'Needed' => 'needed',
+                'Not Needed' => false,
+                'Needed' => true,
+            ],
+            'expanded' => true,
+        ])
+        ->add('RecommendationLetter', ChoiceType::class, [
+            'choices' => [
+                'Not Needed' => false,
+                'Needed' => true,
+            ],
+            'expanded' => true,
+        ])
+        ->add('English_Certificat', ChoiceType::class, [
+            'choices' => [
+                'Not Needed' => false,
+                'Needed' => true,
+            ],
+            'expanded' => true,
+        ])
+        ->add('Other_Documents', ChoiceType::class, [
+            'choices' => [
+                'Not Needed' => false,
+                'Needed' => true,
+            ],
+            'expanded' => true,
+        ])
+        ->add('Nationality', ChoiceType::class, [
+            'choices' => [
+                'Not Needed' => false,
+                'Needed' => true,
             ],
             'expanded' => true,
         ]);

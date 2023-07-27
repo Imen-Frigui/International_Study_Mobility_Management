@@ -80,7 +80,12 @@ class ProgramController extends AbstractController
             // Assuming you have a ProgramSubmission entity to save the form data
             $submission = new ProgramSubmission();
             $submission->setProgram($program);
-            $submission->setCv($formData['cv']);
+            $submission->isNationalityNeeded($formData['Nationality']);
+            $submission->isRecommendationLetterNeeded($formData['RecommendationLetter']);
+            $submission->isCvNeeded($formData['CV']);
+            $submission->isEnglishLanguageCertificateNeeded($formData['English_Certificat']);
+            $submission->isOtherDocumentsNeeded($formData['Other_Documents']);
+           // $submission->setCv($formData['cv']);
             // Set other form fields as needed
 
             // Save the submission to the database
