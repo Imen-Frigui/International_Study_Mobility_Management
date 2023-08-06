@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\StudentSubmission;
+use App\Repository\StudentRepository;
 
 class SubmitionController extends AbstractController
 {
@@ -20,6 +21,17 @@ class SubmitionController extends AbstractController
 
         return $this->render('submition/index.html.twig', [
             'studentSubmissions' => $studentSubmissions,
+        ]);
+    }
+
+    #[Route('/nomination', name: 'nomination')]
+    public function nomination(StudentRepository $studentRepository): Response
+    {
+        // Get all students and sort them based on average grades from first to fifth year
+        $students = $studentRepository->findAllSortedByAverageGrades();
+
+        return $this->render('submition/nomination.html.twig', [
+            'students' => $students,
         ]);
     }
 }

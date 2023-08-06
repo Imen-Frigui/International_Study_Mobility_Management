@@ -20,7 +20,18 @@ class StudentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Student::class);
     }
+// Implement method to fetch students and sort them by average grades from first to fifth year
+    public function findAllSortedByAverageGrades(): array
+    {
+        $entityManager = $this->getEntityManager();
+        
+        $query = $entityManager->createQuery(
+            'SELECT s FROM App\Entity\Student s
+            ORDER BY s.getAverageGradeYear1 ASC, s.getAverageGradeYear2 ASC, s.getAverageGradeYear3 ASC, s.getAverageGradeYear4 ASC, s.getAverageGradeYear5 ASC'
+        );
 
+        return $query->getResult();
+    }
 //    /**
 //     * @return Student[] Returns an array of Student objects
 //     */

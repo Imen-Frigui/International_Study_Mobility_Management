@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+<html>
+<head>
+    <title>Nominations</title>
+</head>
+<body>
+    <h1>Nominations</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Year 1 Avg Grade</th>
+                <th>Year 2 Avg Grade</th>
+                <th>Year 3 Avg Grade</th>
+                <th>Year 4 Avg Grade</th>
+                <th>Year 5 Avg Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.lastName }}</td>
+                    <td>{{ student.getAverageGradeYear1 }}</td>
+                    <td>{{ student.getAverageGradeYear2 }}</td>
+                    <td>{{ student.getAverageGradeYear3 }}</td>
+                    <td>{{ student.getAverageGradeYear4 }}</td>
+                    <td>{{ student.getAverageGradeYear5 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
