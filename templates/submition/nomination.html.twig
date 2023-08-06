@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
-<html>
-<head>
-    <title>Nominations</title>
-</head>
-<body>
+
+{% block title %}Nominations{% endblock %}
+
+{% block content %}
     <h1>Nominations</h1>
 
     <table>
@@ -32,5 +31,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
