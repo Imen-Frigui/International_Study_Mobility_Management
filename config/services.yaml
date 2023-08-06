@@ -10,6 +10,8 @@ services:
     autowire: true
   App\Entity\ProgramSubmission:
     public: true
+  App\Entity\StudentSubmission:
+    public: true
   # default configuration for services in *this* file
   _defaults:
     autowire: true # Automatically injects dependencies in your services.
