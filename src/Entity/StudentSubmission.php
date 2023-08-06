@@ -8,6 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StudentSubmissionRepository::class)]
 class StudentSubmission
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_ACCEPTED = 'accepted';
+    const STATUS_BANNED = 'banned';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -37,6 +41,9 @@ class StudentSubmission
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
+
+    #[ORM\Column(type: 'string', length: 20, nullable: false)]
+    private string $status = self::STATUS_PENDING;
 
     public function getId(): ?int
     {
@@ -135,6 +142,21 @@ class StudentSubmission
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        if (!in_array($status, [self::STATUS_PENDING, self::STATUS_ACCEPTED, self::STATUS_BANNED])) {
+            throw new \InvalidArgumentException(sprintf('Invalid status "%s"', $status));
+        }
+
+        $this->status = $status;
 
         return $this;
     }

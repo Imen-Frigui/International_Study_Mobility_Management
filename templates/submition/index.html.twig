@@ -3,6 +3,7 @@
 {% block title %}Hello SubmitionController!{% endblock %}
 
 {% block body %}
+<div class="col-12">
 <div class="card recent-sales overflow-auto">
 
     <div class="filter">
@@ -53,9 +54,9 @@
                         {% for studentSubmission in studentSubmissions %}
                         <tr data-index="{{ loop.index }}">
                             <td><a href="#">{{ studentSubmission.id }}</a></td>
-                            <td>{{ studentSubmission.customer }}</td>
-                            <td><a href="#" class="text-primary">{{ studentSubmission.product }}</a></td>
-                            <td>${{ studentSubmission.price }}</td>
+                            <td></td>
+                            <td><a href="#" class="text-primary"></a></td>
+                            <td>$</td>
                             <td>
                                 {% if studentSubmission.status == 'Approved' %}
                                 <span class="badge bg-success">Approved</span>
@@ -81,5 +82,5 @@
     </div>
 
 </div>
-
+</div>
 {% endblock %}
