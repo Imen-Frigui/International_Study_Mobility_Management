@@ -34,6 +34,23 @@ class SubmitionController extends AbstractController
             'students' => $students,
         ]);
     }
+
+
+    #[Route('//approve-student-submission/{id}', name: 'approve_student_submission')]
+    public function approveStudentSubmission(StudentSubmission $studentSubmission): Response
+    {
+        // Logic to approve the student submission
+        // For example, you can change the status to "accepted".
+        // Save the changes to the database using the EntityManager or your preferred method.
+        $studentSubmission->setStatus(StudentSubmission::STATUS_ACCEPTED);
+
+        // Assuming you have Doctrine EntityManager injected into the controller
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        // Redirect back to the nominations page
+        return $this->redirectToRoute('app_submition');
+    }
 }
 
 
