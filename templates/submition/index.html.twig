@@ -3,84 +3,28 @@
 {% block title %}Hello SubmitionController!{% endblock %}
 
 {% block body %}
-<div class="col-12">
-<div class="card recent-sales overflow-auto">
+<table class="table table-borderless datatable datatable-table">
+    <thead>
+        <!-- Table header columns -->
+    </thead>
+    <tbody>
+        {% for submission in studentSubmissions %}
+        <tr>
+            <td>{{ submission.id }}</td>
+            <td>{{ submission.program.title }}</td>
+            <!-- Other columns as needed -->
+            <td>
+                {% if submission.status == 'pending' %}
+                    <form action="{{ path('approve_student_submission', {'id': submission.id}) }}" method="post">
+                        <button type="submit" class="btn btn-primary">Approve</button>
+                    </form>
+                {% else %}
+                    <span class="badge bg-success">{{ submission.status }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-    <div class="filter">
-        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-            </li>
-
-            <li><a class="dropdown-item" href="#">Today</a></li>
-            <li><a class="dropdown-item" href="#">This Month</a></li>
-            <li><a class="dropdown-item" href="#">This Year</a></li>
-        </ul>
-    </div>
-
-    <div class="card-body">
-        <h5 class="card-title">Recent Sales <span>| Today</span></h5>
-
-        <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
-            <div class="datatable-top">
-                <div class="datatable-dropdown">
-                    <label>
-                        <select class="datatable-selector">
-                            <option value="5">5</option>
-                            <option value="10" selected>10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                        </select> entries per page
-                    </label>
-                </div>
-                <div class="datatable-search">
-                    <input class="datatable-input" placeholder="Search..." type="search" title="Search within table">
-                </div>
-            </div>
-            <div class="datatable-container">
-                <table class="table table-borderless datatable datatable-table">
-                    <thead>
-                        <tr>
-                            <th data-sortable="true" style="width: 10.918367346938776%;"><a href="#" class="datatable-sorter">#</a></th>
-                            <th data-sortable="true" style="width: 23.97959183673469%;"><a href="#" class="datatable-sorter">Customer</a></th>
-                            <th data-sortable="true" style="width: 40.20408163265306%;"><a href="#" class="datatable-sorter">Product</a></th>
-                            <th data-sortable="true" style="width: 9.795918367346939%;"><a href="#" class="datatable-sorter">Price</a></th>
-                            <th data-sortable="true" style="width: 15.10204081632653%;"><a href="#" class="datatable-sorter">Status</a></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for studentSubmission in studentSubmissions %}
-                        <tr data-index="{{ loop.index }}">
-                            <td><a href="#">{{ studentSubmission.id }}</a></td>
-                            <td></td>
-                            <td><a href="#" class="text-primary"></a></td>
-                            <td>$</td>
-                            <td>
-                                {% if studentSubmission.status == 'Approved' %}
-                                <span class="badge bg-success">Approved</span>
-                                {% elseif studentSubmission.status == 'Pending' %}
-                                <span class="badge bg-warning">Pending</span>
-                                {% else %}
-                                <span class="badge bg-danger">Rejected</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="datatable-bottom">
-                <div class="datatable-info">Showing {{ studentSubmissions|length }} entries</div>
-                <nav class="datatable-pagination">
-                    <ul class="datatable-pagination-list"></ul>
-                </nav>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-</div>
 {% endblock %}

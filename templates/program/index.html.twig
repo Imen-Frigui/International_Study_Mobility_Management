@@ -4,28 +4,181 @@
 {% endblock %}
 
 {% block body %}
-	<table class="table table-borderless datatable datatable-table">
-    <thead>
-        <!-- Table header columns -->
-    </thead>
-    <tbody>
-        {% for submission in studentSubmissions %}
-        <tr>
-            <td>{{ submission.id }}</td>
-            <td>{{ submission.program.title }}</td>
-            <!-- Other columns as needed -->
-            <td>
-                {% if submission.status == 'pending' %}
-                    <form action="{{ path('approve_student_submission', {'id': submission.id}) }}" method="post">
-                        <button type="submit" class="btn btn-primary">Approve</button>
-                    </form>
-                {% else %}
-                    <span class="badge bg-success">{{ submission.status }}</span>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+	<section id="blog" class="blog">
+		<div class="container aos-init aos-animate" data-aos="fade-up">
+			<div class="row">
+				<div class="col-lg-8 entries">
+					{% for program in programs %}
+						<article class="entry">
 
+							<div class="entry-img">
+								<img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
+							</div>
+
+							<h2 class="entry-title">
+								<a href="blog-single.html">{{ program.title }}</a>
+							</h2>
+
+							<div class="entry-meta">
+								<ul>
+									<!-- Display the university name -->
+									<li class="d-flex align-items-center">
+										<i class="bi bi-person"></i>
+										<a href="blog-single.html">{{ program.university.name }}</a>
+									</li>
+									<li class="d-flex align-items-center">
+										<i class="bi bi-clock"></i>
+										<a href="blog-single.html">
+											<time datetime="{{ program.startDate|date("Y-m-d") }}">{{ program.startDate|date("m/d/Y") }}</time>
+										</a>
+									</li>
+									<li class="d-flex align-items-center">
+										<i class="bi bi-clock"></i>
+										<a href="blog-single.html">
+											<time datetime="{{ program.endDate|date("Y-m-d") }}">{{ program.endDate|date("m/d/Y") }}</time>
+										</a>
+									</li>
+									<li class="d-flex align-items-center">
+										<i class="bi bi-chat-dots"></i>
+										<a href="blog-single.html">comments section</a>
+									</li>
+								</ul>
+							</div>
+							<div class="entry-content">
+								<p>{{ program.description }}</p>
+								<!-- Display the link and documents needed -->
+								<p>
+									Link:
+									<a href="{{ program.link }}" target="_blank">{{ program.link }}</a>
+								</p>
+								<p>Documents Needed:
+									{{ program.documentsNeeded }}</p>
+								<div class="read-more">
+									<a href="{{ path('app_program_details', { 'id': program.id }) }}">Read More</a>
+									<a href="{{ path('app_program_submit', { 'id': program.id }) }}">Submission Form</a>
+								</div>
+							</div>
+						</article>
+					{% endfor %}
+
+					<!-- End blog entry -->
+
+					<div class="blog-pagination">
+						<ul class="justify-content-center">
+							<li>
+								<a href="#">1</a>
+							</li>
+							<li class="active">
+								<a href="#">2</a>
+							</li>
+							<li>
+								<a href="#">3</a>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+				<!-- End blog entries list -->
+
+				<div class="col-lg-4">
+
+					<div class="sidebar">
+
+						<h3 class="sidebar-title">Search</h3>
+						<div class="sidebar-item search-form">
+							<form action="">
+								<input type="text">
+								<button type="submit">
+									<i class="bi bi-search"></i>
+								</button>
+							</form>
+						</div>
+						<!-- End sidebar search formn-->
+
+						<h3 class="sidebar-title">Categories</h3>
+						<div class="sidebar-item categories">
+							<ul>
+								<li><a href="#">General<span>(25)</span></a></li>
+								<li><a href="#">Lifestyle<span>(12)</span></a></li>
+								<li><a href="#">Travel<span>(5)</span></a></li>
+								<li><a href="#">Design<span>(22)</span></a></li>
+								<li><a href="#">Creative<span>(8)</span></a></li>
+								<li><a href="#">Educaion<span>(14)</span></a></li>
+							</ul>
+						</div>
+						<!-- End sidebar categories-->
+
+						<h3 class="sidebar-title">Recent Posts</h3>
+						<div class="sidebar-item recent-posts">
+							<div class="post-item clearfix">
+								<img src="assets/img/blog/blog-recent-1.jpg" alt="">
+								<h4>
+									<a href="blog-single.html">Nihil blanditiis at in nihil autem</a>
+								</h4>
+								<time datetime="2020-01-01">Jan 1, 2020</time>
+							</div>
+
+							<div class="post-item clearfix">
+								<img src="assets/img/blog/blog-recent-2.jpg" alt="">
+								<h4>
+									<a href="blog-single.html">Quidem autem et impedit</a>
+								</h4>
+								<time datetime="2020-01-01">Jan 1, 2020</time>
+							</div>
+
+							<div class="post-item clearfix">
+								<img src="assets/img/blog/blog-recent-3.jpg" alt="">
+								<h4>
+									<a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a>
+								</h4>
+								<time datetime="2020-01-01">Jan 1, 2020</time>
+							</div>
+
+							<div class="post-item clearfix">
+								<img src="assets/img/blog/blog-recent-4.jpg" alt="">
+								<h4>
+									<a href="blog-single.html">Laborum corporis quo dara net para</a>
+								</h4>
+								<time datetime="2020-01-01">Jan 1, 2020</time>
+							</div>
+
+							<div class="post-item clearfix">
+								<img src="assets/img/blog/blog-recent-5.jpg" alt="">
+								<h4>
+									<a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a>
+								</h4>
+								<time datetime="2020-01-01">Jan 1, 2020</time>
+							</div>
+
+						</div>
+						<!-- End sidebar recent posts-->
+
+						<h3 class="sidebar-title">Tags</h3>
+						<div class="sidebar-item tags">
+							<ul>
+								<li><a href="#">App</a></li>
+								<li><a href="#">IT</a></li>
+								<li><a href="#">Business</a></li>
+								<li><a href="#">Mac</a></li>
+								<li><a href="#">Design</a></li>
+								<li><a href="#">Office</a></li>
+								<li><a href="#">Creative</a></li>
+								<li><a href="#">Studio</a></li>
+								<li><a href="#">Smart</a></li>
+								<li><a href="#">Tips</a></li>
+								<li><a href="#">Marketing</a></li>
+							</ul>
+						</div>
+						<!-- End sidebar tags-->
+
+					</div>
+					<!-- End sidebar -->
+
+				</div>
+				<!-- End blog sidebar -->
+
+			</div>
+
+		</div>
+	</section>
 {% endblock %}
