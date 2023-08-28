@@ -27,8 +27,12 @@ class ProgramSubmission
     #[JoinTable(name: 'program_submission_documents')]
     private $documents;
 
+    #[ORM\OneToMany(targetEntity: UploadedFile::class, mappedBy: 'programSubmission', cascade: ['persist'])]
+    private $uploadedFiles;
+
     public function __construct()
     {
+        $this->uploadedFiles = new ArrayCollection();
         $this->documents = new ArrayCollection();
     }
 
@@ -66,6 +70,32 @@ class ProgramSubmission
     public function removeDocument(Document $document): self
     {
         $this->documents->removeElement($document);
+
+        return $this;
+    }
+    public function getUploadedFiles(): Collection
+    {
+        return $this->uploadedFiles;
+    }
+
+    public function addUploadedFile(UploadedFile $uploadedFile): self
+    {
+        if (!$this->uploadedFiles->contains($uploadedFile)) {
+            $this->uploadedFiles[] = $uploadedFile;
+            $uploadedFile->setProgramSubmission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUploadedFile(UploadedFile $uploadedFile): self
+    {
+        if ($this->uploadedFiles->removeElement($uploadedFile)) {
+            // set the owning side to null (unless already changed)
+            if ($uploadedFile->getProgramSubmission() === $this) {
+                $uploadedFile->setProgramSubmission(null);
+            }
+        }
 
         return $this;
     }

@@ -15,11 +15,13 @@
         {{ form_widget(form.program, {'attr': {'class': 'form-select'}}) }}
     </div>
 
-    {# Documents Field (Based on the Selected Program) #}
-    <div class="mb-3">
-        {{ form_label(form.documents, 'Select Documents to Upload', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.documents, {'attr': {'class': 'form-control', 'multiple': 'multiple'}}) }}
-    </div>
+    {# File Upload Fields for Documents #}
+    {% for document in form.documents.vars.choices %}
+        <div class="mb-3">
+            {{ form_label(form['document_' ~ document.value], document.label, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form['document_' ~ document.value], {'attr': {'class': 'form-control'}}) }}
+        </div>
+    {% endfor %}
 
     {# Other Submission Fields (Add your other fields here) #}
 
@@ -27,3 +29,4 @@
 
     {{ form_end(form) }}
 {% endblock %}
+

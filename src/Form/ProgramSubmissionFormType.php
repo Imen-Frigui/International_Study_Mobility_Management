@@ -11,6 +11,8 @@ use App\Entity\Document;
 use App\Entity\ProgramSubmission;
 use App\Repository\DocumentRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class ProgramSubmissionFormType extends AbstractType
 {
@@ -25,14 +27,18 @@ class ProgramSubmissionFormType extends AbstractType
     {
         $programId = $options['programId'];
 
-        $builder
-            ->add('documents', EntityType::class, [
-                'class' => Document::class,
-                'choices' => $this->documentRepository->findByProgram($programId),
-                'choice_label' => 'name',
-                'multiple' => true,
+        // Retrieve the documents associated with the program
+        $documents = $this->documentRepository->findByProgram($programId);
+
+        foreach ($documents as $document) {
+            // Add a file upload field for each document
+            $builder->add('document_' . $document->getId(), FileType::class, [
+                'label' => $document->getName(), // Use the document name as the label
+                'required' => true,
+                'mapped' => false,
             ]);
-        // Add other form fields as needed
+        }
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
