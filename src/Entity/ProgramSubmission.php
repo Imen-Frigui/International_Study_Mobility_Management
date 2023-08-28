@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use App\Entity\ProgramFile;
+
 
 #[Entity(repositoryClass: ProgramSubmissionRepository::class)]
 class ProgramSubmission
@@ -27,12 +29,12 @@ class ProgramSubmission
     #[JoinTable(name: 'program_submission_documents')]
     private $documents;
 
-    #[ORM\OneToMany(targetEntity: UploadedFile::class, mappedBy: 'programSubmission', cascade: ['persist'])]
-    private $uploadedFiles;
+    #[ORM\OneToMany(targetEntity: ProgramFile::class, mappedBy: 'programSubmission', cascade: ['persist'])]
+    private $programFiles;
 
     public function __construct()
     {
-        $this->uploadedFiles = new ArrayCollection();
+        $this->programFiles = new ArrayCollection();
         $this->documents = new ArrayCollection();
     }
 
@@ -73,27 +75,27 @@ class ProgramSubmission
 
         return $this;
     }
-    public function getUploadedFiles(): Collection
+    public function getProgramFiles(): Collection
     {
-        return $this->uploadedFiles;
+        return $this->programFiles;
     }
 
-    public function addUploadedFile(UploadedFile $uploadedFile): self
+    public function addProgramFile(ProgramFile $programFile): self
     {
-        if (!$this->uploadedFiles->contains($uploadedFile)) {
-            $this->uploadedFiles[] = $uploadedFile;
-            $uploadedFile->setProgramSubmission($this);
+        if (!$this->programFiles->contains($programFile)) {
+            $this->programFiles[] = $programFile;
+            $programFile->setProgramSubmission($this);
         }
 
         return $this;
     }
 
-    public function removeUploadedFile(UploadedFile $uploadedFile): self
+    public function removeProgramFile(ProgramFile $programFile): self
     {
-        if ($this->uploadedFiles->removeElement($uploadedFile)) {
+        if ($this->programFiles->removeElement($programFile)) {
             // set the owning side to null (unless already changed)
-            if ($uploadedFile->getProgramSubmission() === $this) {
-                $uploadedFile->setProgramSubmission(null);
+            if ($programFile->getProgramSubmission() === $this) {
+                $programFile->setProgramSubmission(null);
             }
         }
 

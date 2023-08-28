@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Service\FileUploader;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Document;
 use App\Entity\ProgramSubmission;
+use App\Entity\ProgramFile;
 use App\Form\ProgramSubmissionFormType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ProgramRepository;
@@ -13,24 +17,57 @@ use App\Repository\ProgramRepository;
 
 class ProgramSubmissionController extends AbstractController
 {
-    #[Route('/submit/{id}', name: 'program_submission')]
-    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request): Response
-    {
-        // Create a new ProgramSubmission entity
-        $programSubmission = new ProgramSubmission();
-  
-        $program = $programRepository->find($id);
+    private $fileUploader;
 
+    public function __construct(FileUploader $fileUploader)
+    {
+        $this->fileUploader = $fileUploader;
+    }
+
+    #[Route('/submit/{id}', name: 'program_submission')]
+    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, FileUploader $fileUploader): Response
+    {
+        // Find the program
+        $program = $programRepository->find($id);
+        $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
+
+        $programSubmission = new ProgramSubmission();
+
+        $programSubmission->setProgram($program);
         $form = $this->createForm(ProgramSubmissionFormType::class, null, [
             'programId' => $program->getId(),
         ]);
 
-       // Handle the form submission
+        // Handle the form submission
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle the submission and save it to the database
             $entityManager = $this->getDoctrine()->getManager();
+
+            foreach ($documents as $document) {
+                // Get the file input for this document
+                $fileInput = $form->get('document_' . $document->getId());
+
+                // Check if a file was uploaded for this document
+                $uploadedFile = $fileInput->getData();
+                if ($uploadedFile) {
+                    // Generate a unique name for the file
+                    $fileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
+
+                    // Move the file to the desired directory
+                    $fileUploader->upload($uploadedFile, $fileName);
+
+                    // Create an UploadedFileEntity (or use your existing entity)
+                    $uploadedFileEntity = new ProgramFile(); // Replace with your entity class
+                    $uploadedFileEntity->setName($uploadedFile->getClientOriginalName());
+                    $uploadedFileEntity->setPath($fileName);
+
+                    // Associate the file with the submission
+                    $programSubmission->addProgramFile($uploadedFileEntity);
+                }
+            }
+
+            // Persist the submission and associated files
             $entityManager->persist($programSubmission);
             $entityManager->flush();
 
@@ -44,4 +81,5 @@ class ProgramSubmissionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 }

@@ -4,7 +4,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-class UploadedFile
+class ProgramFile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,7 +17,7 @@ class UploadedFile
     #[ORM\Column(type: 'string', length: 255)]
     private $path;
 
-    #[ORM\ManyToOne(targetEntity: ProgramSubmission::class, inversedBy: 'uploadedFiles')]
+    #[ORM\ManyToOne(targetEntity: ProgramSubmission::class, inversedBy: 'ProgramFiles')]
     #[ORM\JoinColumn(nullable: false)]
     private $programSubmission;
 
