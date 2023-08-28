@@ -1,0 +1,17 @@
+{# templates/program_submission/submit.html.twig #}
+
+{% extends 'base1.html.twig' %}
+
+{% block title %}Submit to a Program{% endblock %}
+
+{% block body %}
+    <h1>Submit to a Program</h1>
+
+    {{ form_start(form) }}
+
+    {# Display the form fields here, similar to the previous submission form template #}
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    {{ form_end(form) }}
+{% endblock %}

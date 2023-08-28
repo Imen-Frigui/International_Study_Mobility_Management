@@ -2,53 +2,53 @@
 
 namespace App\Form;
 
-use App\Entity\ProgramSubmission;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use App\Entity\Program; // Import the Program entity
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class DynamicProgramSubmissionFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $programSubmission = $options['data'];
-        $programSubmissions = $programSubmission->getProgram()->getProgramSubmission();
-        $builder
+        /** @var Program $program */
+        $program = $options['program'];
 
-            ->add('passportNumber', null, [
+        // Loop through the program's documents and add form fields accordingly
+        foreach ($program->getDocuments() as $document) {
+            // Use the document's name as the field label and the document's ID as the field name
+            $fieldName = 'document_' . $document->getId();
+
+            $builder->add($fieldName, CheckboxType::class, [
+                'label' => $document->getName(),
+                'required' => true, // Adjust this based on your requirements
+                'mapped' => false, // We don't map these fields to an entity property
+            ]);
+        }
+
+        // Add other fields as needed
+        $builder
+            ->add('passportNumber', TextType::class, [
                 'label' => 'Passport Number',
-                'mapped' => false,
-                'required' => $programSubmission->isPassportNeeded(),
+                'mapped' => false, // This field is not mapped to an entity property
+                'required' => $program->isPassportNeeded(), // Determine if it's required based on the program
             ])
-            ->add('cv', null, [
-                'label' => 'CV',
-                'mapped' => false,
-                'required' => $programSubmission->isCvNeeded(),
-            ])
-            ->add('recommendationLetter', null, [
-                'label' => 'recommendationLetter',
-                'mapped' => false,
-                'required' => $programSubmission->isRecommendationLetterNeeded(),
-            ])
-            ->add('englishLanguageCertificate', null, [
-                'label' => 'englishLanguageCertificateNeeded',
-                'mapped' => false,
-                'required' => $programSubmission->isEnglishLanguageCertificateNeeded(),
-            ])
-            // Add other fields as needed based on ProgramSubmission properties
+            // Add other program-specific fields here
+
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProgramSubmission::class,
-            'programSubmission' => null, // Add the programSubmission option with a default value of null
+            // Configure your data class if applicable
+            // 'data_class' => YourEntity::class,
         ]);
+
+        $resolver->setRequired('program'); // Require the 'program' option to be passed
     }
 }

@@ -1,0 +1,62 @@
+ {# templates/admin/create_program.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Program{% endblock %}
+
+{% block body %}
+<main id="main" class="main">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Create a New Program</h5>
+                <!-- Symfony Form -->
+                {{ form_start(form) }}
+                <div class="row mb-5">
+                    {{ form_label(form.title, 'Title', { 'label_attr': {'class': 'col-sm-2 col-form-label'} }) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    {{ form_label(form.startDate, 'Start Date', { 'label_attr': {'class': 'col-sm-2 col-form-label'} }) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.startDate, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                 <div class="row mb-5">
+                    {{ form_label(form.endDate, 'Start Date', { 'label_attr': {'class': 'col-sm-2 col-form-label'} }) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.endDate, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    {{ form_label(form.description, 'Description', { 'label_attr': {'class': 'col-sm-2 col-form-label'} }) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.description, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                 <div class="row mb-5">
+                    {{ form_label(form.link, 'Link', { 'label_attr': {'class': 'col-sm-2 col-form-label'} }) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(form.link, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <!-- Add other form fields as needed -->
+
+                <div class="row mb-3">
+                    <div class="col-sm-2 col-form-label"></div>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit Form</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+                <!-- End Symfony Form -->
+
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

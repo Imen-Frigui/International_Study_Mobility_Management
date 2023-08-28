@@ -29,28 +29,20 @@ class Program
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $eligibilityCriteria = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $documentsNeeded = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $link = null;
 
-    #[ORM\ManyToOne(inversedBy: 'programs')]
-    private ?University $University = null;
+    #[ORM\OneToMany(mappedBy: 'program', targetEntity: Document::class)]
+    private Collection $documents;
 
     #[ORM\OneToMany(mappedBy: 'program', targetEntity: ProgramSubmission::class)]
-    private Collection $programSubmission;
-
-    #[ORM\OneToMany(mappedBy: 'program', targetEntity: StudentSubmission::class)]
-    private Collection $studentSubmission;
+    private Collection $programSubmissions;
 
     public function __construct()
     {
-        $this->programSubmission = new ArrayCollection();
-        $this->studentSubmission = new ArrayCollection();
+        $this->documents = new ArrayCollection();
+        $this->programSubmissions = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -105,29 +97,6 @@ class Program
         return $this;
     }
 
-    public function getEligibilityCriteria(): ?string
-    {
-        return $this->eligibilityCriteria;
-    }
-
-    public function setEligibilityCriteria(string $eligibilityCriteria): static
-    {
-        $this->eligibilityCriteria = $eligibilityCriteria;
-
-        return $this;
-    }
-
-    public function getDocumentsNeeded(): ?string
-    {
-        return $this->documentsNeeded;
-    }
-
-    public function setDocumentsNeeded(string $documentsNeeded): static
-    {
-        $this->documentsNeeded = $documentsNeeded;
-
-        return $this;
-    }
 
     public function getLink(): ?string
     {
@@ -141,14 +110,32 @@ class Program
         return $this;
     }
 
-    public function getUniversity(): ?University
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
     {
-        return $this->University;
+        return $this->documents;
     }
 
-    public function setUniversity(?University $University): static
+    public function addDocument(Document $document): static
     {
-        $this->University = $University;
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setProgram($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): static
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getProgram() === $this) {
+                $document->setProgram(null);
+            }
+        }
 
         return $this;
     }
@@ -156,15 +143,15 @@ class Program
     /**
      * @return Collection<int, ProgramSubmission>
      */
-    public function getProgramSubmission(): Collection
+    public function getProgramSubmissions(): Collection
     {
-        return $this->programSubmission;
+        return $this->programSubmissions;
     }
 
     public function addProgramSubmission(ProgramSubmission $programSubmission): static
     {
-        if (!$this->programSubmission->contains($programSubmission)) {
-            $this->programSubmission->add($programSubmission);
+        if (!$this->programSubmissions->contains($programSubmission)) {
+            $this->programSubmissions->add($programSubmission);
             $programSubmission->setProgram($this);
         }
 
@@ -173,7 +160,7 @@ class Program
 
     public function removeProgramSubmission(ProgramSubmission $programSubmission): static
     {
-        if ($this->programSubmission->removeElement($programSubmission)) {
+        if ($this->programSubmissions->removeElement($programSubmission)) {
             // set the owning side to null (unless already changed)
             if ($programSubmission->getProgram() === $this) {
                 $programSubmission->setProgram(null);
@@ -183,33 +170,5 @@ class Program
         return $this;
     }
 
-    /**
-     * @return Collection<int, StudentSubmission>
-     */
-    public function getStudentSubmission(): Collection
-    {
-        return $this->studentSubmission;
-    }
 
-    public function addStudentSubmission(StudentSubmission $studentSubmission): static
-    {
-        if (!$this->studentSubmission->contains($studentSubmission)) {
-            $this->studentSubmission->add($studentSubmission);
-            $studentSubmission->setProgram($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStudentSubmission(StudentSubmission $studentSubmission): static
-    {
-        if ($this->studentSubmission->removeElement($studentSubmission)) {
-            // set the owning side to null (unless already changed)
-            if ($studentSubmission->getProgram() === $this) {
-                $studentSubmission->setProgram(null);
-            }
-        }
-
-        return $this;
-    }
 }

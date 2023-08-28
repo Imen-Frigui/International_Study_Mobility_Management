@@ -23,11 +23,6 @@
 						<div class="entry-meta">
 							<ul>
 								<li class="d-flex align-items-center">
-									<i class="bi bi-person"></i>
-									<a href="blog-single.html">{{ program.university.name }}</a>
-
-								</li>
-								<li class="d-flex align-items-center">
 									<i class="bi bi-clock"></i>
 									<a href="blog-single.html">
 										<time datetime="2020-01-01">{{ program.startDate |date("m/d/Y")}}</time>
@@ -46,20 +41,13 @@
 							<p>
 								{{ program.description }}
 							</p>
-							<blockquote>
-								<p>{{program.eligibilityCriteria}}
-								</p>
-							</blockquote>
-							<p>
-								{{ program.documentsNeeded }}
-							</p>
 						</div>
 						<div class="entry-footer">
 							<i class="bi bi-folder"></i>
 							<ul class="cats">
 
 								<button>
-									<a href="{{ path('app_program_submit', { 'id': program.id }) }}">Submit</a>
+									<a href="{{ path('program_submission', { 'id': program.id }) }}">Submit</a>
 
 								</button>
 							</ul>

@@ -1,23 +1,29 @@
-{% extends 'base1.html.twig' %}
+{# templates/program/submission_form.html.twig #}
 
-{% block title %}Submission Form -
-	{{ program.title }}
-{% endblock %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Submit to a Program{% endblock %}
 
 {% block body %}
-	<h1>{{ program.title }}</h1>
-	<p>University:</p>
-	<p>Link:
-		<a href="{{ program.link }}">{{ program.link }}</a>
-	</p>
-	<p>Documents Needed:
-		{{ program.documentsNeeded }}</p>
-	<p>Submission Deadline:
+    <h1>Submit to a Program</h1>
 
-		{# Render the form #}
-		<form method="post">
-			{{ form_widget(form) }}
-		</form>
-	</p>
+    {{ form_start(form) }}
 
+    {# Program Selection Field #}
+    <div class="mb-3">
+        {{ form_label(form.program, 'Select a Program') }}
+        {{ form_widget(form.program, {'attr': {'class': 'form-select'}}) }}
+    </div>
+
+    {# Documents Field (Based on the Selected Program) #}
+    <div class="mb-3">
+        {{ form_label(form.documents, 'Select Documents to Upload', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.documents, {'attr': {'class': 'form-control', 'multiple': 'multiple'}}) }}
+    </div>
+
+    {# Other Submission Fields (Add your other fields here) #}
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    {{ form_end(form) }}
 {% endblock %}

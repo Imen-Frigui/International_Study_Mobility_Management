@@ -51,6 +51,7 @@ class SubmitionController extends AbstractController
         // Redirect back to the nominations page
         return $this->redirectToRoute('app_submition');
     }
+    
 }
 
 

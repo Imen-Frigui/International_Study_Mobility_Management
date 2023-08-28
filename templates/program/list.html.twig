@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+   {#} <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for program in programs %}
+                <tr>
+                    <td>{{ program.id }}</td>
+                    <td>{{ program.title }}</td>
+                    <td>{{ program.description }}</td>
+                    <td>{{ program.startDate|date('Y-m-d') }}</td>
+                    <td>{{ program.endDate|date('Y-m-d') }}</td>
+                    <td>
+                        <a href="{{ path('program_show', {'id': program.id}) }}" class="btn btn-primary">View</a>
+                        <a href="{{ path('program_edit', {'id': program.id}) }}" class="btn btn-secondary">Edit</a>
+                        <a href="{{ path('program_delete', {'id': program.id}) }}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('program_new') }}" class="btn btn-success">Create a New Program</a>
+
+
+    #}
+
+
+<main id="main" class="main">
+
+<section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">List of Programs</h5>
+              <p>a Table with all the Programs     <a href="{{ path('app_admin') }}" class="btn btn-success">Create a New Program</a></p>
+
+              <!-- Table with stripped rows -->
+              <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns"><div class="datatable-top">
+
+<div class="datatable-container">
+    <table class="table datatable datatable-table">
+        <thead>
+            <tr>
+                <th data-sortable="true" style="width: 5.7053941908713695%;"><a href="#" class="datatable-sorter">#</a></th>
+                <th data-sortable="true" style="width: 28.008298755186722%;"><a href="#" class="datatable-sorter">Title</a></th>
+                <th data-sortable="true" style="width: 9.232365145228217%"><a href="#" class="datatable-sorter">Start Date</a></th>
+                <th data-sortable="true" style="width: 9.232365145228217%;"><a href="#" class="datatable-sorter">End Date</a></th>
+                <th data-sortable="true" style="width: 38.294605809128633%;"><a href="#" class="datatable-sorter">Description</a></th>
+                <th data-sortable="true" style="width: 19.294605809128633%;"><a href="#" class="datatable-sorter">Link</a></th>
+                <th data-sortable="true" style="width: 25.294605809128633%;"><a href="#" class="datatable-sorter">Action</a></th>
+                <th>Add Document</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for program in programs %}
+            <tr data-index="0">
+                <td>{{ program.id }}</td>
+                    <td>{{ program.title }}</td>
+                    <td>{{ program.startDate|date('Y-m-d') }}</td>
+                    <td>{{ program.endDate|date('Y-m-d') }}</td>
+                    <td>{{ program.description }}</td>
+                    <td>{{ program.link }}</td>
+                    <td>
+                        {#<a href="{{ path('program_show', {'id': program.id}) }}" class="btn btn-primary">View</a>
+                        <a href="{{ path('program_edit', {'id': program.id}) }}" class="btn btn-secondary">Edit</a>
+                        <a href="{{ path('program_delete', {'id': program.id}) }}" class="btn btn-danger">Delete</a>#}
+                    </td>
+                    <td>
+                        <a href="{{ path('add_document_to_program', {'id': program.id}) }}" class="btn btn-success">Add Document</a>
+                    </td>
+             </tr>
+             {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="datatable-bottom">
+    <div class="datatable-info">Showing 1 to 5 of 5 entries</div>
+    <nav class="datatable-pagination"><ul class="datatable-pagination-list"></ul></nav>
+</div></div>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    </main>
+
+{% endblock %}

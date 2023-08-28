@@ -24,7 +24,6 @@
 									<!-- Display the university name -->
 									<li class="d-flex align-items-center">
 										<i class="bi bi-person"></i>
-										<a href="blog-single.html">{{ program.university.name }}</a>
 									</li>
 									<li class="d-flex align-items-center">
 										<i class="bi bi-clock"></i>
@@ -51,8 +50,7 @@
 									Link:
 									<a href="{{ program.link }}" target="_blank">{{ program.link }}</a>
 								</p>
-								<p>Documents Needed:
-									{{ program.documentsNeeded }}</p>
+						
 								<div class="read-more">
 									<a href="{{ path('app_program_details', { 'id': program.id }) }}">Read More</a>
 									<a href="{{ path('app_program_submit', { 'id': program.id }) }}">Submission Form</a>
