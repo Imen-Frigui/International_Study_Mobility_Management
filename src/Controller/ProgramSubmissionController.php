@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Service\FileUploader;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+//use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +25,7 @@ class ProgramSubmissionController extends AbstractController
     }
 
     #[Route('/submit/{id}', name: 'program_submission')]
-    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, FileUploader $fileUploader): Response
+    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request): Response
     {
         // Find the program
         $program = $programRepository->find($id);
@@ -55,16 +55,18 @@ class ProgramSubmissionController extends AbstractController
                     $fileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
 
                     // Move the file to the desired directory
-                    $fileUploader->upload($uploadedFile, $fileName);
+                    $this->fileUploader->upload($uploadedFile, $fileName);
 
-                    // Create an UploadedFileEntity (or use your existing entity)
-                    $uploadedFileEntity = new ProgramFile(); // Replace with your entity class
-                    $uploadedFileEntity->setName($uploadedFile->getClientOriginalName());
-                    $uploadedFileEntity->setPath($fileName);
+                    // Create a ProgramFile entity
+                    $programFile = new ProgramFile();
+                    $programFile->setName($uploadedFile->getClientOriginalName());
+                    $programFile->setPath($fileName);
+                    $programFile->setProgramSubmission($programSubmission);
 
+                    $entityManager->persist($programFile);
                     // Associate the file with the submission
-                    $programSubmission->addProgramFile($uploadedFileEntity);
-                }
+                    $programSubmission->addProgramFile($programFile);
+               }
             }
 
             // Persist the submission and associated files
@@ -81,5 +83,4 @@ class ProgramSubmissionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }
