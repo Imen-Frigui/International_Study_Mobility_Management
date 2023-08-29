@@ -21,6 +21,19 @@ class ProgramRepository extends ServiceEntityRepository
         parent::__construct($registry, Program::class);
     }
 
+    public function getStudentStatusCount($programId, $status)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('count(s.id)')
+            ->join('p.programSubmissions', 's')
+            ->where('p.id = :programId')
+            ->andWhere('s.status = :status')
+            ->setParameter('programId', $programId)
+            ->setParameter('status', $status);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Program[] Returns an array of Program objects
 //     */

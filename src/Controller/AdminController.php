@@ -123,4 +123,25 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('review_submissions', ['id' => $programSubmission->getProgram()->getId()]);
     }
+
+    #[Route('/admin/stats', name: 'programs_stats')]
+    public function programStat(ProgramRepository $programRepository): Response
+    {
+        $programs = $programRepository->findAll();
+
+        $programData = [];
+
+        foreach ($programs as $program) {
+            $programData[] = [
+                'title' => $program->getTitle(),
+                'accepted' => $programRepository->getStudentStatusCount($program->getId(), 'accepted'),
+                'pending' => $programRepository->getStudentStatusCount($program->getId(), 'pending'),
+                'rejected' => $programRepository->getStudentStatusCount($program->getId(), 'rejected')
+            ];
+        }
+
+        return $this->render('admin/stat.html.twig', [
+            'programData' => json_encode($programData)
+        ]);
+    }
 }
