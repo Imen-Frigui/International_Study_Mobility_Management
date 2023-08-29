@@ -63,6 +63,7 @@
                 <th data-sortable="true" style="width: 19.294605809128633%;"><a href="#" class="datatable-sorter">Link</a></th>
                 <th data-sortable="true" style="width: 25.294605809128633%;"><a href="#" class="datatable-sorter">Action</a></th>
                 <th>Add Document</th> 
+                <th>Review Submissions</th>
             </tr>
         </thead>
         <tbody>
@@ -81,6 +82,9 @@
                     </td>
                     <td>
                         <a href="{{ path('add_document_to_program', {'id': program.id}) }}" class="btn btn-success">Add Document</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('review_submissions', {'id': program.id}) }}" class="btn btn-info">Review Submissions</a>
                     </td>
              </tr>
              {% endfor %}

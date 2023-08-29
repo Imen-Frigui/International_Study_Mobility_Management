@@ -8,6 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Program;
 use App\Form\ProgramType;
+use App\Repository\ProgramSubmissionRepository;
+use App\Repository\ProgramRepository;
+
 
 
 
@@ -34,6 +37,26 @@ class AdminController extends AbstractController
 
         return $this->render('admin/create_program.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/review-submissions/{id}', name: 'review_submissions')]
+    public function reviewSubmissions(int $id, ProgramRepository $programRepository, ProgramSubmissionRepository $programSubmissionRepository): Response
+    {
+        // Find the program
+        $program = $programRepository->find($id);
+
+        if (!$program) {
+            throw $this->createNotFoundException('Program not found');
+        }
+
+        // Fetch the submissions for this program
+        $submissions = $programSubmissionRepository->findBy(['program' => $program]);
+
+        // Render a template to display the submissions
+        return $this->render('program/review_submissions.html.twig', [
+            'program' => $program,
+            'submissions' => $submissions,
         ]);
     }
 }

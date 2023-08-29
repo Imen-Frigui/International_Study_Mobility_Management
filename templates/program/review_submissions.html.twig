@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Review Submissions{% endblock %}
+
+{% block body %}
+    <h1>Review Submissions for {{ program.title }}</h1>
+    {% if submissions is empty %}
+        <p>No submissions have been made for this program yet.</p>
+    {% else %}
+    <main id="main" class="main">
+    
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">List of Programs</h5>
+                <p>a Table with all the Programs     <a href="{{ path('app_admin') }}" class="btn btn-success">Create a New Program</a></p>
+
+                <!-- Table with stripped rows -->
+                <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns"><div class="datatable-top">
+
+        <div class="datatable-container">
+        <table class="table datatable datatable-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Submitted Documents</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions %}
+                    <tr>
+                        <td>{{ submission.id }}</td>
+                        <td>{{ submission.student.name }} {{ submission.student.lastName }}</td>
+                        <td>
+                            <ul>
+                                {% for file in submission.programFiles %}
+                                    <li>{{ file.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                           {# <a href="{{ path('review_submission_details', {'id': submission.id}) }}" class="btn btn-primary">View Details</a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <div class="datatable-bottom">
+    <div class="datatable-info">Showing 1 to 5 of 5 entries</div>
+    <nav class="datatable-pagination"><ul class="datatable-pagination-list"></ul></nav>
+</div></div>
+              <!-- End Table with stripped rows -->
+    {% endif %}
+
+    <a href="{{ path('program_list') }}" class="btn btn-secondary">Back to Program List</a>
+        </main>
+
+{% endblock %}
