@@ -5,6 +5,10 @@
 {% block header %}
 	<header id="header" class="header fixed-top">
 		<div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+			<a href="index.html" class="logo d-flex align-items-center">
+				<img src="{{ asset('asset1/img/logo.png') }}" alt="">
+				<span>Job4U</span>
+			</a>
 				<nav id="navbar" class="navbar">
 				<ul>
 					<li class="nav-item dropdown">
@@ -55,49 +59,11 @@
 			<a class="nav-link scrollto active" href="{{ path('app_program')}}">Home</a>
 		</li>
 		<li>
-			<a class="nav-link scrollto" href="">Events</a>
+			<a class="nav-link scrollto" href="{{ path('app_program')}}">Programs</a>
 		</li>
-		<li>
-			<a class="nav-link scrollto active" href="/useroffre">Offre</a>
+        <li>
+			<a class="nav-link scrollto"  href="{{ path('student_submissions')}}">My Submissions</a>
 		</li>
-				<li>
-								<a class="nav-link scrollto active" href="/project">Projects</a>
-							</li>
-							<li>
-								<a class="nav-link scrollto active" href="/poste/forum">Posts</a>
-							</li>
-
-								<li class="dropdown">
-									<a href="#">
-										<span>Offre Management</span>
-										<i class="bi bi-chevron-down"></i>
-									</a>
-									<ul>
-										<li><a href="">My offres</a></li>
-										<li><a href="">Add New offre</a></li>
-										<li><a href="">Add New projects</a></li>
-										<li><a href="">Postulation</a></li>
-									</ul>
-								</li>
-			<li class="dropdown">
-				<a href="#">
-					<span>Event Management</span>
-					<i class="bi bi-chevron-down"></i>
-				</a>
-				<ul>
-					<li><a href="">My participations</a></li>
-					<li><a href="">My event</a></li>
-					<li><a href="">Add New Event</a></li>
-					<li><a href="">Add New Poste</a></li>
-				</ul>
-			</li>
-			<li>
-				<a class="nav-link scrollto" href="}">View Profile</a>
-			</li>
-			<li>
-				<a class="getstarted scrollto" href=>Logout</a>
-			</li>
-	</ul>
 	<i class="bi bi-list mobile-nav-toggle"></i>
 </nav>
 <!-- .navbar --></div></header><!-- End Header -->{% endblock %}
