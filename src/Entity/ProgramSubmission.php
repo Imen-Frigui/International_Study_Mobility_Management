@@ -32,6 +32,9 @@ class ProgramSubmission
     #[ORM\OneToMany(targetEntity: ProgramFile::class, mappedBy: 'programSubmission', cascade: ['persist'])]
     private $programFiles;
 
+    #[ORM\ManyToOne(inversedBy: 'programSubmissions')]
+    private ?Student $student = null;
+
     public function __construct()
     {
         $this->programFiles = new ArrayCollection();
@@ -98,6 +101,18 @@ class ProgramSubmission
                 $programFile->setProgramSubmission(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?Student $student): static
+    {
+        $this->student = $student;
 
         return $this;
     }

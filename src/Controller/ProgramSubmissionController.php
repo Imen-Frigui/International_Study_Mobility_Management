@@ -13,6 +13,7 @@ use App\Entity\ProgramFile;
 use App\Form\ProgramSubmissionFormType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ProgramRepository;
+use App\Repository\StudentRepository;
 
 
 class ProgramSubmissionController extends AbstractController
@@ -25,7 +26,7 @@ class ProgramSubmissionController extends AbstractController
     }
 
     #[Route('/submit/{id}', name: 'program_submission')]
-    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request): Response
+    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, StudentRepository $studentRepository): Response
     {
         // Find the program
         $program = $programRepository->find($id);
@@ -34,6 +35,8 @@ class ProgramSubmissionController extends AbstractController
         $programSubmission = new ProgramSubmission();
 
         $programSubmission->setProgram($program);
+        $student = $studentRepository->find(1);
+        $programSubmission->setStudent($student);
         $form = $this->createForm(ProgramSubmissionFormType::class, null, [
             'programId' => $program->getId(),
         ]);
@@ -43,6 +46,7 @@ class ProgramSubmissionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            
 
             foreach ($documents as $document) {
                 // Get the file input for this document

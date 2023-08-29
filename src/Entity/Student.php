@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StudentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
@@ -20,19 +22,25 @@ class Student
     private ?string $lastName = null;
 
     #[ORM\Column]
-    private ?float $getAverageGradeYear1 = null;
+    private ?float $firstYearGrade = null;
 
     #[ORM\Column]
-    private ?float $getAverageGradeYear2 = null;
+    private ?float $secondYearGrade = null;
 
     #[ORM\Column]
-    private ?float $getAverageGradeYear3 = null;
+    private ?float $thirdYearGrade = null;
 
     #[ORM\Column]
-    private ?float $getAverageGradeYear4 = null;
+    private ?float $fourthYearGrade = null;
 
-    #[ORM\Column]
-    private ?float $getAverageGradeYear5 = null;
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: ProgramSubmission::class)]
+    private Collection $programSubmissions;
+
+    public function __construct()
+    {
+        $this->programSubmissions = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -63,38 +71,38 @@ class Student
         return $this;
     }
 
-    public function getGetAverageGradeYear1(): ?float
+    public function getFirstYearGrade(): ?float
     {
-        return $this->getAverageGradeYear1;
+        return $this->firstYearGrade;
     }
 
-    public function setGetAverageGradeYear1(float $getAverageGradeYear1): static
+    public function setFirstYearGrade(float $firstYearGrade): static
     {
-        $this->getAverageGradeYear1 = $getAverageGradeYear1;
+        $this->firstYearGrade = $firstYearGrade;
 
         return $this;
     }
 
-    public function getGetAverageGradeYear2(): ?float
+    public function getSecondYearGrade(): ?float
     {
-        return $this->getAverageGradeYear2;
+        return $this->secondYearGrade;
     }
 
-    public function setGetAverageGradeYear2(float $getAverageGradeYear2): static
+    public function setSecondYearGrade(float $secondYearGrade): static
     {
-        $this->getAverageGradeYear2 = $getAverageGradeYear2;
+        $this->secondYearGrade = $secondYearGrade;
 
         return $this;
     }
 
-    public function getGetAverageGradeYear3(): ?float
+    public function getThirdYearGrade(): ?float
     {
-        return $this->getAverageGradeYear3;
+        return $this->thirdYearGrade;
     }
 
-    public function setGetAverageGradeYear3(float $getAverageGradeYear3): static
+    public function setThirdYearGrade(float $thirdYearGrade): static
     {
-        $this->getAverageGradeYear3 = $getAverageGradeYear3;
+        $this->thirdYearGrade = $thirdYearGrade;
 
         return $this;
     }
@@ -104,22 +112,45 @@ class Student
         return $this->getAverageGradeYear4;
     }
 
-    public function setGetAverageGradeYear4(float $getAverageGradeYear4): static
+    public function setFourthYearGrade(float $fourthYearGrade): static
     {
-        $this->getAverageGradeYear4 = $getAverageGradeYear4;
+        $this->fourthYearGrade = $fourthYearGrade;
+
+        return $this;
+    }
+    public function getAverageGrade(): ?float
+    {
+        return ($this->firstYearGrade + $this->secondYearGrade + $this->thirdYearGrade + $this->fourthYearGrade) / 4;
+    }
+
+    /**
+     * @return Collection<int, ProgramSubmission>
+     */
+    public function getProgramSubmissions(): Collection
+    {
+        return $this->programSubmissions;
+    }
+
+    public function addProgramSubmission(ProgramSubmission $programSubmission): static
+    {
+        if (!$this->programSubmissions->contains($programSubmission)) {
+            $this->programSubmissions->add($programSubmission);
+            $programSubmission->setStudent($this);
+        }
 
         return $this;
     }
 
-    public function getGetAverageGradeYear5(): ?float
+    public function removeProgramSubmission(ProgramSubmission $programSubmission): static
     {
-        return $this->getAverageGradeYear5;
-    }
-
-    public function setGetAverageGradeYear5(float $getAverageGradeYear5): static
-    {
-        $this->getAverageGradeYear5 = $getAverageGradeYear5;
+        if ($this->programSubmissions->removeElement($programSubmission)) {
+            // set the owning side to null (unless already changed)
+            if ($programSubmission->getStudent() === $this) {
+                $programSubmission->setStudent(null);
+            }
+        }
 
         return $this;
     }
+
 }
