@@ -46,20 +46,27 @@ class AdminController extends AbstractController
     {
         // Find the program
         $program = $programRepository->find($id);
-
+    
         if (!$program) {
             throw $this->createNotFoundException('Program not found');
         }
-
+    
         // Fetch the submissions for this program
         $submissions = $programSubmissionRepository->findBy(['program' => $program]);
-
+    
+        // Sort the submissions based on the average grade of the associated student
+        usort($submissions, function ($a, $b) {
+            $averageGradeA = $a->getStudent()->getAverageGrade();
+            $averageGradeB = $b->getStudent()->getAverageGrade();
+            return $averageGradeB <=> $averageGradeA; // Descending order
+        });
+    
         // Render a template to display the submissions
         return $this->render('program/review_submissions.html.twig', [
             'program' => $program,
             'submissions' => $submissions,
         ]);
-    }
+    }    
 
     #[Route('/accept_submission/{id}', name: 'accept_submission')]
     public function acceptSubmission(int $id, ProgramSubmission $programSubmission, ProgramSubmissionRepository $programSubmissionRepository): Response
