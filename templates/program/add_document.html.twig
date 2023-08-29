@@ -10,13 +10,6 @@
 <div class="container">
     <h1>Add Document to Program</h1>
     
-    {# Display any flash messages (e.g., success messages) if available #}
-    {% for flashMessage in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{ flashMessage }}
-    </div>
-    {% endfor %}
-    
     {# Display the program's details #}
     <h2>Program: {{ program.getTitle() }}</h2>
     

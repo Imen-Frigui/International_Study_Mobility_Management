@@ -19,9 +19,13 @@ class DocumentType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Name',
             ])
-            ->add('path', FileType::class, [
+            ->add('path', ChoiceType::class, [
                 'label' => 'File',
-                'mapped' => false, // Set to false if you don't want to bind to the entity property.
+                'choices' => [
+                    'Pdf' => 'Pdf',
+                    'Word' => 'word',
+                    'Picture' => 'picture',
+                ], // Set to false if you don't want to bind to the entity property.
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -29,9 +33,8 @@ class DocumentType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'label' => 'Status',
                 'choices' => [
-                    'Draft' => 'draft',
-                    'Published' => 'published',
-                    'Archived' => 'archived',
+                    'Mandatory' => 'mandatory',
+                    'Optional' => 'optional',
                 ],
             ]);
     }

@@ -3,21 +3,35 @@
 {% block title %}Review Submissions{% endblock %}
 
 {% block body %}
+
     <h1>Review Submissions for {{ program.title }}</h1>
+
     {% if submissions is empty %}
         <p>No submissions have been made for this program yet.</p>
     {% else %}
     <main id="main" class="main">
-    
+    <div class="container">
+
+    <h1>Review Submissions for {{ program.title }}</h1>
+
+    {# Display any flash messages (e.g., success messages) if available #}
+    {% for flashMessage in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ flashMessage }}
+    </div>
+    {% endfor %}
+    {% for flashMessage in app.flashes('danger') %}
+    <div class="alert alert-danger">
+        {{ flashMessage }}
+    </div>
+    {% endfor %}
+
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
 
             <div class="card">
                 <div class="card-body">
-                <h5 class="card-title">List of Programs</h5>
-                <p>a Table with all the Programs     <a href="{{ path('app_admin') }}" class="btn btn-success">Create a New Program</a></p>
-
                 <!-- Table with stripped rows -->
                 <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns"><div class="datatable-top">
 
@@ -44,7 +58,17 @@
                                 {% endfor %}
                             </ul>
                         </td>
-                        <td>{{ submission.status }}</td>
+                        <td>
+                            {% if submission.status == 'pending' %}
+                                <span class="badge bg-warning">{{ submission.status }}</span>
+                            {% endif %}
+                            {% if submission.status == 'accepted' %}
+                                <span class="badge bg-success">{{ submission.status }}</span>
+                            {% endif %}
+                            {% if submission.status == 'rejected' %}
+                                <span class="badge bg-danger">{{ submission.status }}</span>
+                            {% endif %}
+                        </td>
                         <td>
                             {% if submission.status == 'pending' %}
                                 <a href="{{ path('accept_submission', {'id': submission.id}) }}" class="btn btn-success">Accept</a>
@@ -70,6 +94,7 @@
     {% endif %}
 
     <a href="{{ path('program_list') }}" class="btn btn-secondary">Back to Program List</a>
+        </div>
         </main>
 
 {% endblock %}

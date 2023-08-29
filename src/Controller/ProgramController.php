@@ -104,10 +104,15 @@ class ProgramController extends AbstractController
     }
     
     #[Route('/program/{id}/add-document', name: 'add_document_to_program')]
-    public function addDocumentToProgram(Program $program, Request $request): Response
+    public function addDocumentToProgram(Program $program, Request $request, ProgramRepository $programRepository, int $id): Response
     {
+         $program = $programRepository->find($id);
+
         // Create a form to handle document upload
         $document = new Document(); // Create a new Document entity
+
+        $document->setProgram($program);
+
         $form = $this->createForm(DocumentType::class, $document); // Use the form to handle this document entity
 
         $form->handleRequest($request);

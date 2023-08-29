@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Document;
 use App\Form\DocumentType;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\ProgramRepository;
 
 class DocumentController extends AbstractController
 {
@@ -21,10 +22,14 @@ class DocumentController extends AbstractController
         ]);
     }
     
-    #[Route('/document/new', name: 'document_new')]
-    public function newDocument(Request $request): Response
+    #[Route('/document/new/{id}', name: 'document_new')]
+    public function newDocument(Request $request, ProgramRepository $programRepository, int $id): Response
     {
+        //$program = $programRepository->find($id);
+
         $document = new Document();
+       // $document->getProgram($program);
+
         $form = $this->createForm(DocumentType::class, $document);
 
         $form->handleRequest($request);

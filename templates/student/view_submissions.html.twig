@@ -93,9 +93,7 @@
 								<ul>
 									<li>{{ submission.status }}</li>
 								</ul>
-								<a  class="btn-buy" style="background-color: green; color: white;">Edit</a>
-								<a  class="btn-buy" style="background-color: red; color: white;">Delete</a>
-								<a class="btn-buy" style="margin-top: 4px;">Participants List</a>
+								<a class="btn-buy" style="margin-top: 4px;" href="{{ path('app_program_details', { 'id': submission.program.id }) }}"   >View Program</a>
 							</div>
 						</a>
 					</div>
