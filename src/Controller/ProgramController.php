@@ -15,16 +15,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\ProgramSubmission;
 use App\Entity\StudentSubmission;
+use App\Entity\Student;
+use App\Repository\NotificationRepository;
+
 
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'app_program')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(ProgramRepository $programRepository, NotificationRepository $notificationRepository): Response
     {
         $programs = $programRepository->findAll();
 
+        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
+
         return $this->render('program/index.html.twig', [
             'programs' => $programs,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -41,43 +48,20 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/program/{id}', name:'app_program_details')]
-    public function programDetails(ProgramRepository $programRepository, int $id):Response
+    public function programDetails(ProgramRepository $programRepository, int $id, NotificationRepository $notificationRepository):Response
     {
         $program = $programRepository->find($id);
+
+        
+        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
 
         return $this ->render ('program/program_details.html.twig',[
             'program' => $program,
+            'notifications' => $notifications,
         ]);
     }
 
-   /*  #[Route('/submit/{id}', name: 'app_program_submit')]
-    public function submitProgram(ProgramRepository $programRepository, int $id, ProgramSubmissionRepository $programSubmissionRepository, Program $program, Request $request): Response
-    {
-        $program = $programRepository->find($id);
-        // Fetch the program submissions related to the given program
-        $programSubmissions = $programSubmissionRepository->findBy(['program' => $program]);
-
-        // Create a form for each program submission
-        $forms = [];
-        foreach ($programSubmissions as $programSubmission) {
-            $form = $this->createForm(DynamicProgramSubmissionFormType::class, $programSubmission);
-            $form->handleRequest($request);
-            $forms[] = $form->createView();
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                // Save the form data to the database (you may need to modify this part)
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($programSubmission);
-                $entityManager->flush();
-            }
-        }
-
-        return $this->render('program/submit_program.html.twig', [
-            'program' => $program,
-            'forms' => $forms,
-        ]);
-    }
-*/
 
     #[Route('/program/{id}/submission', name: 'app_program_submission')]
     public function submissionForm(ProgramRepository $programRepository, int $id, Request $request): Response
@@ -118,6 +102,7 @@ class ProgramController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
     #[Route('/program/{id}/add-document', name: 'add_document_to_program')]
     public function addDocumentToProgram(Program $program, Request $request): Response
     {

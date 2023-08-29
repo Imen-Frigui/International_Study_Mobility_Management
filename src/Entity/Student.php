@@ -36,9 +36,13 @@ class Student
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: ProgramSubmission::class)]
     private Collection $programSubmissions;
 
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Notification::class)]
+    private Collection $notifications;
+
     public function __construct()
     {
         $this->programSubmissions = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,6 +151,36 @@ class Student
             // set the owning side to null (unless already changed)
             if ($programSubmission->getStudent() === $this) {
                 $programSubmission->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotifications(Notification $notifications): static
+    {
+        if (!$this->notifications->contains($notifications)) {
+            $this->notifications->add($notifications);
+            $notifications->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotifications(Notification $notifications): static
+    {
+        if ($this->notifications->removeElement($notifications)) {
+            // set the owning side to null (unless already changed)
+            if ($notifications->getStudent() === $this) {
+                $notifications->setStudent(null);
             }
         }
 

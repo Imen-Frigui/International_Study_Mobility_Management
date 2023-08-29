@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Program;
+use App\Entity\Notification;
 use App\Entity\ProgramSubmission;
 use App\Form\ProgramType;
 use App\Repository\ProgramSubmissionRepository;
@@ -72,8 +73,24 @@ class AdminController extends AbstractController
     public function acceptSubmission(int $id, ProgramSubmission $programSubmission, ProgramSubmissionRepository $programSubmissionRepository): Response
     {
         $programSubmission = $programSubmissionRepository->find($id);
+
+        if (!$programSubmission) {
+            throw $this->createNotFoundException('Submission not found');
+        }
+
+        // Set the submission status
         $programSubmission->setStatus(ProgramSubmission::STATUS_ACCEPTED);
-        $this->getDoctrine()->getManager()->flush();
+
+        // Create a notification for the student
+        $notification = new Notification();
+        $notification->setMessage('Your submission request has been accepted');
+        $notification->setStudent($programSubmission->getStudent());
+        $notification->setHasRead(false); // Mark as unread
+        $notification->setCreatedAt(new \DateTimeImmutable());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($notification);
+
+        $em->flush();
 
         $this->addFlash('success', 'Submission accepted successfully.');
 
@@ -84,8 +101,23 @@ class AdminController extends AbstractController
     public function rejectSubmission(int $id, ProgramSubmission $programSubmission, ProgramSubmissionRepository $programSubmissionRepository): Response
     {
         $programSubmission = $programSubmissionRepository->find($id);
+
+        if (!$programSubmission) {
+            throw $this->createNotFoundException('Submission not found');
+        }
+
         $programSubmission->setStatus(ProgramSubmission::STATUS_BANNED);
-        $this->getDoctrine()->getManager()->flush();
+       
+        // Create a notification for the student
+        $notification = new Notification();
+        $notification->setMessage('Your submission request has been rejected');
+        $notification->setStudent($programSubmission->getStudent());
+        $notification->setHasRead(false); // Mark as unread
+        $notification->setCreatedAt(new \DateTimeImmutable());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($notification);
+
+        $em->flush();
 
         $this->addFlash('danger', 'Submission rejected.');
 
