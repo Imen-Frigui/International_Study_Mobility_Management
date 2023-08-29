@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Document;
+use App\Entity\Student;
 use App\Entity\ProgramSubmission;
 use App\Entity\ProgramFile;
 use App\Form\ProgramSubmissionFormType;
@@ -31,12 +32,13 @@ class ProgramSubmissionController extends AbstractController
         // Find the program
         $program = $programRepository->find($id);
         $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
-
+        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        
         $programSubmission = new ProgramSubmission();
 
         $programSubmission->setProgram($program);
-        $student = $studentRepository->find(1);
         $programSubmission->setStudent($student);
+
         $form = $this->createForm(ProgramSubmissionFormType::class, null, [
             'programId' => $program->getId(),
         ]);

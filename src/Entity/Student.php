@@ -41,7 +41,6 @@ class Student
         $this->programSubmissions = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;
@@ -107,17 +106,18 @@ class Student
         return $this;
     }
 
-    public function getGetAverageGradeYear4(): ?float
+    public function getFourthYearGrade(): ?float // Corrected method name
     {
-        return $this->getAverageGradeYear4;
+        return $this->fourthYearGrade;
     }
 
-    public function setFourthYearGrade(float $fourthYearGrade): static
+    public function setFourthYearGrade(float $fourthYearGrade): static // Corrected method name
     {
         $this->fourthYearGrade = $fourthYearGrade;
 
         return $this;
     }
+
     public function getAverageGrade(): ?float
     {
         return ($this->firstYearGrade + $this->secondYearGrade + $this->thirdYearGrade + $this->fourthYearGrade) / 4;
@@ -152,5 +152,4 @@ class Student
 
         return $this;
     }
-
 }
