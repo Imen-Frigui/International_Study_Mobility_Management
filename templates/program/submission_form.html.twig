@@ -9,24 +9,24 @@
 
     {{ form_start(form) }}
 
-    {# Program Selection Field #}
+    {# Program Selection Field #} 
     <div class="mb-3">
         {{ form_label(form.program, 'Select a Program') }}
         {{ form_widget(form.program, {'attr': {'class': 'form-select'}}) }}
     </div>
 
-    {# File Upload Fields for Documents #}
+    {# File Upload Fields for Documents #} 
     {% for document in form.documents.vars.choices %}
         <div class="mb-3">
             {{ form_label(form['document_' ~ document.value], document.label, {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form['document_' ~ document.value], {'attr': {'class': 'form-control'}}) }}
         </div>
-    {% endfor %}
+    {% endfor %} 
 
     {# Other Submission Fields (Add your other fields here) #}
 
     <button type="submit" class="btn btn-primary">Submit</button>
 
     {{ form_end(form) }}
-{% endblock %}
+{% endblock %}  
 
