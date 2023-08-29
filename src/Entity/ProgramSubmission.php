@@ -13,6 +13,10 @@ use Doctrine\ORM\Mapping\Id;
 #[ORM\Entity(repositoryClass: ProgramSubmissionRepository::class)]
 class ProgramSubmission
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_ACCEPTED = 'accepted';
+    const STATUS_BANNED = 'rejected';
+
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
@@ -30,6 +34,9 @@ class ProgramSubmission
 
     #[ORM\ManyToOne(targetEntity: Student::class, inversedBy: 'programSubmissions')]
     private $student;
+
+    #[ORM\Column(type: 'string', length: 20, nullable: false)]
+    private string $status = self::STATUS_PENDING;
 
     public function __construct()
     {
@@ -110,6 +117,22 @@ class ProgramSubmission
                 $programFile->setProgramSubmission(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        if (!in_array($status, [self::STATUS_PENDING, self::STATUS_ACCEPTED, self::STATUS_BANNED])) {
+            throw new \InvalidArgumentException(sprintf('Invalid status "%s"', $status));
+        }
+
+        $this->status = $status;
 
         return $this;
     }

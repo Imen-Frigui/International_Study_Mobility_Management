@@ -28,6 +28,7 @@
                     <th>#</th>
                     <th>Student</th>
                     <th>Submitted Documents</th>
+                    <th>Current Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -43,8 +44,18 @@
                                 {% endfor %}
                             </ul>
                         </td>
+                        <td>{{ submission.status }}</td>
                         <td>
-                           {# <a href="{{ path('review_submission_details', {'id': submission.id}) }}" class="btn btn-primary">View Details</a>#}
+                            {% if submission.status == 'pending' %}
+                                <a href="{{ path('accept_submission', {'id': submission.id}) }}" class="btn btn-success">Accept</a>
+                                <a href="{{ path('reject_submission', {'id': submission.id}) }}" class="btn btn-danger">Reject</a>
+                            {% endif %}
+                            {% if submission.status == 'accepted' %}
+                                <a href="{{ path('reject_submission', {'id': submission.id}) }}" class="btn btn-danger">Reject</a>
+                            {% endif %}
+                            {% if submission.status == 'rejected' %}
+                                <a href="{{ path('accept_submission', {'id': submission.id}) }}" class="btn btn-success">Accept</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Program;
+use App\Entity\ProgramSubmission;
 use App\Form\ProgramType;
 use App\Repository\ProgramSubmissionRepository;
 use App\Repository\ProgramRepository;
@@ -58,5 +59,29 @@ class AdminController extends AbstractController
             'program' => $program,
             'submissions' => $submissions,
         ]);
+    }
+
+    #[Route('/accept_submission/{id}', name: 'accept_submission')]
+    public function acceptSubmission(int $id, ProgramSubmission $programSubmission, ProgramSubmissionRepository $programSubmissionRepository): Response
+    {
+        $programSubmission = $programSubmissionRepository->find($id);
+        $programSubmission->setStatus(ProgramSubmission::STATUS_ACCEPTED);
+        $this->getDoctrine()->getManager()->flush();
+
+        $this->addFlash('success', 'Submission accepted successfully.');
+
+        return $this->redirectToRoute('review_submissions', ['id' => $programSubmission->getProgram()->getId()]);
+    }
+
+    #[Route('/reject_submission/{id}', name: 'reject_submission')]
+    public function rejectSubmission(int $id, ProgramSubmission $programSubmission, ProgramSubmissionRepository $programSubmissionRepository): Response
+    {
+        $programSubmission = $programSubmissionRepository->find($id);
+        $programSubmission->setStatus(ProgramSubmission::STATUS_BANNED);
+        $this->getDoctrine()->getManager()->flush();
+
+        $this->addFlash('danger', 'Submission rejected.');
+
+        return $this->redirectToRoute('review_submissions', ['id' => $programSubmission->getProgram()->getId()]);
     }
 }
