@@ -1,6 +1,7 @@
 {% extends 'base1.html.twig' %}
 
 {% block title %}Home Page{% endblock %}
+
 {% block header %}
 	<header id="header" class="header fixed-top">
 		<div class="container-fluid container-xl d-flex align-items-center justify-content-between">
@@ -27,14 +28,13 @@
 								{% for notification in notifications %}
 									<li class="notification-item" style="margin-left: 10px;">
 											<i class="bi bi-info-circle text-primary"></i>
-											<a href=>
+											<a href="{{ path('view_notification', {'id': notification.id}) }}">
 												<span class="badge rounded-pill bg-primary p-2 ms-2">View</span>
-											</a>
+       										</a>
 										<div>
 											<p>{{ notification.message }}</p>
 											<p>{{ notification.createdAt|date('d M Y, H:i') }}</p>
 										</div>
-
 									</li>
 								</li>
 								<li>
@@ -48,6 +48,55 @@
 					</li>
 				</ul>
 		</li>
+		<li>
+			<a class="nav-link scrollto active" href="{{ path('program_list') }}">Dashboard</a>
+		</li>
+		<li>
+			<a class="nav-link scrollto active" href="{{ path('app_program')}}">Home</a>
+		</li>
+		<li>
+			<a class="nav-link scrollto" href="">Events</a>
+		</li>
+		<li>
+			<a class="nav-link scrollto active" href="/useroffre">Offre</a>
+		</li>
+				<li>
+								<a class="nav-link scrollto active" href="/project">Projects</a>
+							</li>
+							<li>
+								<a class="nav-link scrollto active" href="/poste/forum">Posts</a>
+							</li>
+
+								<li class="dropdown">
+									<a href="#">
+										<span>Offre Management</span>
+										<i class="bi bi-chevron-down"></i>
+									</a>
+									<ul>
+										<li><a href="">My offres</a></li>
+										<li><a href="">Add New offre</a></li>
+										<li><a href="">Add New projects</a></li>
+										<li><a href="">Postulation</a></li>
+									</ul>
+								</li>
+			<li class="dropdown">
+				<a href="#">
+					<span>Event Management</span>
+					<i class="bi bi-chevron-down"></i>
+				</a>
+				<ul>
+					<li><a href="">My participations</a></li>
+					<li><a href="">My event</a></li>
+					<li><a href="">Add New Event</a></li>
+					<li><a href="">Add New Poste</a></li>
+				</ul>
+			</li>
+			<li>
+				<a class="nav-link scrollto" href="}">View Profile</a>
+			</li>
+			<li>
+				<a class="getstarted scrollto" href=>Logout</a>
+			</li>
 	</ul>
 	<i class="bi bi-list mobile-nav-toggle"></i>
 </nav>
