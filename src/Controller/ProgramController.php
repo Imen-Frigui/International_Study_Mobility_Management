@@ -18,7 +18,6 @@ use App\Entity\StudentSubmission;
 use App\Entity\Student;
 use App\Repository\NotificationRepository;
 
-
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'app_program')]
