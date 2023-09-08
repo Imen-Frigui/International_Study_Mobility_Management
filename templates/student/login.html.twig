@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <!-- <h1>Login</h1>
+
+    <form method="post">
+   
+
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>-->
+    <main id="main" class="main">
+
+    <div class="card">
+            <div class="card-body" method="post">
+              <h5 class="card-title">Vertical Form</h5>
+
+              <!-- Vertical Form -->
+              <form method="post" action="{{ path('student_login') }}" class="row g-3">
+              {{ form_start(form) }}
+                <div class="col-12">
+
+                  <label for="inputNanme4" class="form-label">Your Name</label>
+                  {{ form_widget(form.identifiant, {'attr': {'class': 'form-control', 'placeholder': 'identifiant'}}) }}
+                </div>
+                <div class="col-12">
+                  <label for="inputEmail4" class="form-label">Email</label>
+                  {{ form_widget(form.cin, {'attr': {'class': 'form-control', 'placeholder': 'cin'}}) }}
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                        {{ form_end(form) }}
+              </form><!-- Vertical Form -->
+
+            </div>
+</div>
+{% endblock %}
+
+
+
+

@@ -39,6 +39,12 @@ class Student
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Notification::class)]
     private Collection $notifications;
 
+    #[ORM\Column(length: 255)]
+    private ?string $cin = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $identifiant = null;
+
     public function __construct()
     {
         $this->programSubmissions = new ArrayCollection();
@@ -183,6 +189,30 @@ class Student
                 $notifications->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCin(): ?string
+    {
+        return $this->cin;
+    }
+
+    public function setCin(string $cin): static
+    {
+        $this->cin = $cin;
+
+        return $this;
+    }
+
+    public function getIdentifiant(): ?string
+    {
+        return $this->identifiant;
+    }
+
+    public function setIdentifiant(string $identifiant): static
+    {
+        $this->identifiant = $identifiant;
 
         return $this;
     }

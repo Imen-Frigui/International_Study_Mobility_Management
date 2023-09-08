@@ -10,6 +10,42 @@
 			</a>
 				<nav id="navbar" class="navbar">
 				<ul>
+					<li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0 show" href="#" data-bs-toggle="dropdown" aria-expanded="true">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ student.lastname }}  {{ student.name }}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile show" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-16px, 38px);">
+            <li class="dropdown-header">
+              <h6>{{ student.lastname }}</h6>
+              <span>  {{ student.name }}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li>
 					<li class="nav-item dropdown">
 							<a class="nav-link nav-icon show" href="#" data-bs-toggle="dropdown" aria-expanded="true">
 								<i class="bi bi-bell"></i>

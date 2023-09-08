@@ -25,13 +25,22 @@ class ProgramController extends AbstractController
     public function index(ProgramRepository $programRepository, NotificationRepository $notificationRepository): Response
     {
         $programs = $programRepository->findAll();
+        // In another controller
+         $student = $this->get('session')->get('student');
 
-        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        // Check if the student is in the session
+        if (!$student) {
+            // Handle the case where the student is not found in the session, maybe redirect to the login page
+            return $this->redirectToRoute('student_login');
+        }
+
+       // $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
         $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
 
         return $this->render('program/index.html.twig', [
             'programs' => $programs,
             'notifications' => $notifications,
+            'student' => $student,
         ]);
     }
 

@@ -4,10 +4,9 @@
 # config/routes.yaml
 
 admin_create_program:
-    path: '/admin/program/create'
-    controller: 'App\Controller\AdminController::createProgram'
+  path: "/admin/program/create"
+  controller: 'App\Controller\AdminController::createProgram'
 
 program_submission:
-    resource: App\Controller\ProgramSubmissionController
-    type: annotation
-
+  resource: App\Controller\ProgramSubmissionController
+  type: annotation
