@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\LoginFormType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\StudentRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class StudentLoginController extends AbstractController
@@ -49,8 +50,20 @@ class StudentLoginController extends AbstractController
     return $this->render('student/login.html.twig', [
         'form' => $form->createView(),
     ]);
-}
 
+
+}
+    #[Route('/student/logout', name: 'student_logout')]
+    public function logout(SessionInterface $session): Response
+    {
+        // Invalidate the student session
+        $session->remove('student');
+
+        // You can add a message or other logic here if needed
+
+        // Redirect to a page after logout
+        return $this->redirectToRoute('app_program');
+    }
 
 
 
