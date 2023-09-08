@@ -24,19 +24,30 @@ class StudentController extends AbstractController
         $studentId = 1;
         $submissions = $programSubmissionRepository->findBy(['student' => $studentId]);
 
-        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        $student = $this->get('session')->get('student');
+        // Check if the student is in the session
+        if (!$student) {
+            // Handle the case where the student is not found in the session, maybe redirect to the login page
+            return $this->redirectToRoute('student_login');
+        }
         $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
         
         return $this->render('student/view_submissions.html.twig', [
             'submissions' => $submissions,
             'notifications' => $notifications,
+            'student' => $student,
         ]);
     }
 
     #[Route('/view-unread-notifications', name: 'view_unread_notifications')]
     public function viewUnreadNotifications(NotificationRepository $notificationRepository): Response
     {
-        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        $student = $this->get('session')->get('student');
+        // Check if the student is in the session
+        if (!$student) {
+            // Handle the case where the student is not found in the session, maybe redirect to the login page
+            return $this->redirectToRoute('student_login');
+        }
 
         if (!$student) {
             throw $this->createNotFoundException('Student not found');
@@ -46,6 +57,8 @@ class StudentController extends AbstractController
 
         return $this->render('student/unread_notifications.html.twig', [
             'notifications' => $notifications,
+            'student' => $student,
+            
         ]);
     }
 

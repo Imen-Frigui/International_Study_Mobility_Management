@@ -61,13 +61,20 @@ class ProgramController extends AbstractController
     {
         $program = $programRepository->find($id);
 
-        
-        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        $student = $this->get('session')->get('student');
+
+        // Check if the student is in the session
+        if (!$student) {
+            // Handle the case where the student is not found in the session, maybe redirect to the login page
+            return $this->redirectToRoute('student_login');
+        }
         $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
 
         return $this ->render ('program/program_details.html.twig',[
             'program' => $program,
             'notifications' => $notifications,
+            'student' => $student,
+
         ]);
     }
 
