@@ -15,6 +15,7 @@ use App\Form\ProgramSubmissionFormType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ProgramRepository;
 use App\Repository\StudentRepository;
+use App\Repository\NotificationRepository;
 
 
 class ProgramSubmissionController extends AbstractController
@@ -27,12 +28,20 @@ class ProgramSubmissionController extends AbstractController
     }
 
     #[Route('/submit/{id}', name: 'program_submission')]
-    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, StudentRepository $studentRepository): Response
+    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, StudentRepository $studentRepository, NotificationRepository $notificationRepository): Response
     {
         // Find the program
         $program = $programRepository->find($id);
         $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
-        $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+       // $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
+        $student = $this->get('session')->get('student');
+
+        // Check if the student is in the session
+        if (!$student) {
+            // Handle the case where the student is not found in the session, maybe redirect to the login page
+            return $this->redirectToRoute('student_login');
+        }
+        $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
         
         $programSubmission = new ProgramSubmission();
 
@@ -87,6 +96,8 @@ class ProgramSubmissionController extends AbstractController
 
         return $this->render('program_submission/submit.html.twig', [
             'form' => $form->createView(),
+            'student' => $student,
+            'notifications' => $notifications
         ]);
     }
 }

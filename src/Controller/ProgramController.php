@@ -74,7 +74,6 @@ class ProgramController extends AbstractController
             'program' => $program,
             'notifications' => $notifications,
             'student' => $student,
-
         ]);
     }
 
