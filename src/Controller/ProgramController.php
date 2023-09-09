@@ -21,9 +21,19 @@ use App\Repository\NotificationRepository;
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'app_program')]
-    public function index(ProgramRepository $programRepository, NotificationRepository $notificationRepository): Response
+    public function index(ProgramRepository $programRepository, NotificationRepository $notificationRepository, Request $request): Response
     {
-        $programs = $programRepository->findAll();
+        $searchQuery = $request->query->get('search_query');
+        $programs = [];
+
+        if (!empty($searchQuery)) {
+            // Implement your logic to filter programs based on the search query
+            $programs = $programRepository->findBySearchQuery($searchQuery); // Replace with your repository method
+        } else {
+            // If no search query, fetch all programs
+            $programs = $programRepository->findAll();
+        }
+        //$programs = $programRepository->findAll();
         // In another controller
          $student = $this->get('session')->get('student');
 

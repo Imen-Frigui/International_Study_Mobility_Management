@@ -33,6 +33,14 @@ class ProgramRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+    public function findBySearchQuery($searchQuery)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.title LIKE :query')
+            ->setParameter('query', '%'.$searchQuery.'%')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Program[] Returns an array of Program objects
