@@ -254,14 +254,14 @@
 					<div class="sidebar">
 
 						<h3 class="sidebar-title">Search</h3>
-						<div class="sidebar-item search-form">
-							<form action="">
-								<input type="text">
-								<button type="submit">
-									<i class="bi bi-search"></i>
-								</button>
-							</form>
-						</div>
+						<form method="get" action="{{ path('app_program') }}" class="search-form mb-3">
+							<div class="input-group">
+								<input type="text" class="form-control" name="search_query" placeholder="Search programs">
+								<div class="input-group-append">
+									<button type="submit" class="btn btn-primary">Search</button>
+								</div>
+							</div>
+						</form>
 						<!-- End sidebar search formn-->
 
 						<h3 class="sidebar-title">Categories</h3>
