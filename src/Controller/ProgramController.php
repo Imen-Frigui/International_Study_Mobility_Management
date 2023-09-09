@@ -30,8 +30,8 @@ class ProgramController extends AbstractController
             // Implement your logic to filter programs based on the search query
             $programs = $programRepository->findBySearchQuery($searchQuery); // Replace with your repository method
         } else {
-            // If no search query, fetch all programs
-            $programs = $programRepository->findAll();
+            // If no search query, fetch all programs that are open
+           $programs = $programRepository->findOpenPrograms();
         }
         //$programs = $programRepository->findAll();
         // In another controller

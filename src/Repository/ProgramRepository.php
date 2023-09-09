@@ -33,11 +33,23 @@ class ProgramRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+    
     public function findBySearchQuery($searchQuery)
     {
         return $this->createQueryBuilder('p')
             ->where('p.title LIKE :query')
             ->setParameter('query', '%'.$searchQuery.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOpenPrograms()
+    {
+        $currentDate = new \DateTime();
+
+        return $this->createQueryBuilder('p')
+            ->where('p.endDate >= :currentDate')
+            ->setParameter('currentDate', $currentDate)
             ->getQuery()
             ->getResult();
     }
