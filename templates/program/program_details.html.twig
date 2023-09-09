@@ -150,7 +150,12 @@
 							<ul class="cats">
 
 							</ul>
-
+							{% set currentDate = "now"|date('Y-m-d') %} {# Get the current date in the format YYYY-MM-DD #}
+								{% if currentDate < program.endDate|date('Y-m-d') %}
+									<a href="{{ path('program_submission', { 'id': program.id }) }}">
+										<button type="submit" class="btn btn-primary" style="margin-left: 700px;">Submit Application</button>
+									</a>
+								{% endif %}
 								<a href="{{ path('program_submission', { 'id': program.id }) }}">
 									<button type="submit" class="btn btn-primary" style="margin-left: 700px;">Submit Appliaction</button>
 								</a>
