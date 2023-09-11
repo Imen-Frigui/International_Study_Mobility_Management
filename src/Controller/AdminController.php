@@ -86,8 +86,6 @@ class AdminController extends AbstractController
                 });
             }
 
-
-
         // Sort the submissions based on the average grade of the associated student
       //  usort($submissions, function ($a, $b) {
         //    $averageGradeA = $a->getStudent()->getAverageGrade();
