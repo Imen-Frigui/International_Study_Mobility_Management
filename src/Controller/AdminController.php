@@ -49,42 +49,46 @@ class AdminController extends AbstractController
             throw $this->createNotFoundException('Program not found');
         }
     
-                // Get the sorting parameter from the query string (default to 'averageGrade')
-            $sort = $request->query->get('sort', 'averageGrade');
-                // Fetch the submissions for this program
-                $submissions = $programSubmissionRepository->findBy(['program' => $program]);
-            // Sort the submissions based on the selected criteria
-            if ($sort === 'averageGrade') {
-                usort($submissions, function ($a, $b) {
-                    $averageGradeA = $a->getStudent()->getAverageGrade();
-                    $averageGradeB = $b->getStudent()->getAverageGrade();
-                    return $averageGradeB <=> $averageGradeA; // Descending order
-                });
-            } elseif ($sort === 'firstYear') {
-                usort($submissions, function ($a, $b) {
-                    $gradeA = $a->getStudent()->getFirstYearGrade();
-                    $gradeB = $b->getStudent()->getFirstYearGrade();
-                    return $gradeB <=> $gradeA; // Descending order
-                });
-            } elseif ($sort === 'secondYear') {
-                usort($submissions, function ($a, $b) {
-                    $gradeA = $a->getStudent()->getSecondYearGrade();
-                    $gradeB = $b->getStudent()->getSecondYearGrade();
-                    return $gradeB <=> $gradeA; // Descending order
-                });
-            } elseif ($sort === 'thirdYear') {
-                usort($submissions, function ($a, $b) {
-                    $gradeA = $a->getStudent()->getThirdYearGrade();
-                    $gradeB = $b->getStudent()->getThirdYearGrade();
-                    return $gradeB <=> $gradeA; // Descending order
-                });
-            } elseif ($sort === 'fourthYear') {
-                usort($submissions, function ($a, $b) {
-                    $gradeA = $a->getStudent()->getFourthYearGrade();
-                    $gradeB = $b->getStudent()->getFourthYearGrade();
-                    return $gradeB <=> $gradeA; // Descending order
-                });
-            }
+        // Get the sorting parameter from the query string (default to 'averageGrade')
+        $sort = $request->query->get('sort', 'averageGrade');
+        // Fetch the submissions for this program
+        $submissions = $programSubmissionRepository->findBy(['program' => $program]);
+        // Sort the submissions based on the selected criteria
+        if ($sort === 'averageGrade') {
+            usort($submissions, function ($a, $b) {
+                $averageGradeA = $a->getStudent()->getAverageGrade();
+                $averageGradeB = $b->getStudent()->getAverageGrade();
+                return $averageGradeB <=> $averageGradeA; // Descending order
+            });
+
+        } elseif ($sort === 'firstYear') {
+            usort($submissions, function ($a, $b) {
+                $gradeA = $a->getStudent()->getFirstYearGrade();
+                $gradeB = $b->getStudent()->getFirstYearGrade();
+                return $gradeB <=> $gradeA; // Descending order
+            });
+    
+        } elseif ($sort === 'secondYear') {
+            usort($submissions, function ($a, $b) {
+                $gradeA = $a->getStudent()->getSecondYearGrade();
+                $gradeB = $b->getStudent()->getSecondYearGrade();
+                return $gradeB <=> $gradeA; // Descending order
+            });
+
+        } elseif ($sort === 'thirdYear') {
+            usort($submissions, function ($a, $b) {
+                $gradeA = $a->getStudent()->getThirdYearGrade();
+                $gradeB = $b->getStudent()->getThirdYearGrade();
+                return $gradeB <=> $gradeA; // Descending order
+            });
+
+        } elseif ($sort === 'fourthYear') {
+            usort($submissions, function ($a, $b) {
+                $gradeA = $a->getStudent()->getFourthYearGrade();
+                $gradeB = $b->getStudent()->getFourthYearGrade();
+                return $gradeB <=> $gradeA; // Descending order
+            });
+        }
 
         // Sort the submissions based on the average grade of the associated student
       //  usort($submissions, function ($a, $b) {
