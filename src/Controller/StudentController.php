@@ -21,10 +21,13 @@ class StudentController extends AbstractController
     public function viewSubmissions(ProgramSubmissionRepository $programSubmissionRepository, NotificationRepository $notificationRepository): Response
     {
         // Fetch submissions for student with ID 2
-        $studentId = 1;
-        $submissions = $programSubmissionRepository->findBy(['student' => $studentId]);
+        //$studentId = 1;
+      //  $submissions = $programSubmissionRepository->findBy(['student' => $studentId]);
 
         $student = $this->get('session')->get('student');
+        $studentId= $student->getId();
+                $submissions = $programSubmissionRepository->findBy(['student' => $studentId]);
+
         // Check if the student is in the session
         if (!$student) {
             // Handle the case where the student is not found in the session, maybe redirect to the login page

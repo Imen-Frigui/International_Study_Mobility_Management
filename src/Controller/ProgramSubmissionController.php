@@ -45,13 +45,16 @@ class ProgramSubmissionController extends AbstractController
 
         // Explicitly persist the Program and Student entities
         
-        if (!$studentRepository->find($student)) {
-            // If not, persist it
-            $entityManager->persist($student);
-        }else{
-            $student = $studentRepository->find($student);
-        }
-        $entityManager->flush();
+$existingStudent = $studentRepository->findOneBy(['id' => $student->getId()]);
+
+if (!$existingStudent) {
+    // If not, persist it
+    $entityManager->persist($student);
+} else {
+    // If the student already exists, update the $student variable
+    $student = $existingStudent;
+}
+$entityManager->flush();
 
 
         $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
