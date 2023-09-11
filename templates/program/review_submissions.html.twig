@@ -6,11 +6,46 @@
 
     <h1>Review Submissions for {{ program.title }}</h1>
 
+
+
+
     {% if submissions is empty %}
         <p>No submissions have been made for this program yet.</p>
     {% else %}
     <main id="main" class="main">
     <div class="container">
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="datatable-selector-container">
+    <label>Sort by Year:</label>
+    <ul>
+        <li>
+            <a href="{{ path('review_submissions', {'id': program.id}) }}">First Year</a>
+        </li>
+        <li>
+            <a href="{{ path('review_submissions', {'id': program.id}) }}">Second Year</a>
+        </li>
+        <li>
+            <a href="{{ path('review_submissions', {'id': program.id}) }}">Third Year</a>
+        </li>
+        <li>
+            <a href="{{ path('review_submissions', {'id': program.id}) }}">Fourth Year</a>
+        </li>
+    </ul>
+</div>
+
+
+
 
     <h1>Review Submissions for {{ program.title }}</h1>
 
