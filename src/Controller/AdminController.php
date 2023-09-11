@@ -61,17 +61,29 @@ class AdminController extends AbstractController
                     return $averageGradeB <=> $averageGradeA; // Descending order
                 });
             } elseif ($sort === 'firstYear') {
-                // Sort based on first-year grade
-                // Implement your sorting logic here
+                usort($submissions, function ($a, $b) {
+                    $gradeA = $a->getStudent()->getFirstYearGrade();
+                    $gradeB = $b->getStudent()->getFirstYearGrade();
+                    return $gradeB <=> $gradeA; // Descending order
+                });
             } elseif ($sort === 'secondYear') {
-                // Sort based on second-year grade
-                // Implement your sorting logic here
+                usort($submissions, function ($a, $b) {
+                    $gradeA = $a->getStudent()->getSecondYearGrade();
+                    $gradeB = $b->getStudent()->getSecondYearGrade();
+                    return $gradeB <=> $gradeA; // Descending order
+                });
             } elseif ($sort === 'thirdYear') {
-                // Sort based on third-year grade
-                // Implement your sorting logic here
+                usort($submissions, function ($a, $b) {
+                    $gradeA = $a->getStudent()->getThirdYearGrade();
+                    $gradeB = $b->getStudent()->getThirdYearGrade();
+                    return $gradeB <=> $gradeA; // Descending order
+                });
             } elseif ($sort === 'fourthYear') {
-                // Sort based on fourth-year grade
-                // Implement your sorting logic here
+                usort($submissions, function ($a, $b) {
+                    $gradeA = $a->getStudent()->getFourthYearGrade();
+                    $gradeB = $b->getStudent()->getFourthYearGrade();
+                    return $gradeB <=> $gradeA; // Descending order
+                });
             }
 
 
