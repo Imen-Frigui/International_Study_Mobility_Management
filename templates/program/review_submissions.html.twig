@@ -6,33 +6,23 @@
 
     <h1>Review Submissions for {{ program.title }}</h1>
 
-
-
-
     {% if submissions is empty %}
         <p>No submissions have been made for this program yet.</p>
     {% else %}
     <main id="main" class="main">
     <div class="container">
 
-
-
-
-
-    <form method="get">
-        <label for="sortingCriteria">Sort by:</label>
-        <select id="sortingCriteria" name="sort">
-            <option value="averageGrade" {% if sort == 'averageGrade' %}selected{% endif %}>Average Grade</option>
-            <option value="firstYear" {% if sort == 'firstYear' %}selected{% endif %}>First Year</option>
-            <option value="secondYear" {% if sort == 'secondYear' %}selected{% endif %}>Second Year</option>
-            <option value="thirdYear" {% if sort == 'thirdYear' %}selected{% endif %}>Third Year</option>
-            <option value="fourthYear" {% if sort == 'fourthYear' %}selected{% endif %}>Fourth Year</option>
-        </select>
-        <button type="submit">Sort</button>
-    </form>
-
-
-
+        <form method="get">
+            <label for="sortingCriteria">Sort by:</label>
+            <select id="sortingCriteria" name="sort">
+                <option value="averageGrade" {% if sort == 'averageGrade' %}selected{% endif %}>Average Grade</option>
+                <option value="firstYear" {% if sort == 'firstYear' %}selected{% endif %}>First Year</option>
+                <option value="secondYear" {% if sort == 'secondYear' %}selected{% endif %}>Second Year</option>
+                <option value="thirdYear" {% if sort == 'thirdYear' %}selected{% endif %}>Third Year</option>
+                <option value="fourthYear" {% if sort == 'fourthYear' %}selected{% endif %}>Fourth Year</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
 
     <h1>Review Submissions for {{ program.title }}</h1>
 
