@@ -32,6 +32,7 @@ class ProgramSubmissionController extends AbstractController
     {
         // Find the program
         $program = $programRepository->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
         $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
        // $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
         $student = $this->get('session')->get('student');
@@ -41,6 +42,18 @@ class ProgramSubmissionController extends AbstractController
             // Handle the case where the student is not found in the session, maybe redirect to the login page
             return $this->redirectToRoute('student_login');
         }
+
+        // Explicitly persist the Program and Student entities
+        
+        if (!$studentRepository->find($student)) {
+            // If not, persist it
+            $entityManager->persist($student);
+        }else{
+            $student = $studentRepository->find($student);
+        }
+        $entityManager->flush();
+
+
         $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
         
         $programSubmission = new ProgramSubmission();
