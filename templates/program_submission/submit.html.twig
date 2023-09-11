@@ -104,14 +104,50 @@
 </nav>
 <!-- .navbar --></div></header><!-- End Header -->{% endblock %}
 
-{% block body %}
-    <h1>Submit to a Program</h1>
 
-    {{ form_start(form) }}
+
+
+
+
+
+
+
+{% block body %}
+
+
+<div style="align-items: center; justify-content: center; margin-top: 10px; margin-right: 500px; margin-left: 500px;">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Submit to a Program</h5>
+
+            <!-- Your Symfony Form for Submission -->
+            <form method="POST" action="{{ path('program_submission', {'id': program.id }) }}" enctype="multipart/form-data">
+                {{ form_start(form) }}
+
+                <div class="row mb-3">
+
+                </div>
+                <!-- Add other form fields in a similar manner -->
+
+                <div class="row mb-3">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </form>
+            <!-- End Your Symfony Form -->
+
+        </div>
+    </div>
+</div>
+
+
+   {# {{ form_start(form) }}
 
     {# Display the form fields here, similar to the previous submission form template #}
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    {#<button type="submit" class="btn btn-primary">Submit</button>#}
 
-    {{ form_end(form) }}
+    {#{{ form_end(form) }}#}
 {% endblock %}

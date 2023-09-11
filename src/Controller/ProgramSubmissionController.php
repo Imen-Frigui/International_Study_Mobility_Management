@@ -113,7 +113,8 @@ $entityManager->flush();
         return $this->render('program_submission/submit.html.twig', [
             'form' => $form->createView(),
             'student' => $student,
-            'notifications' => $notifications
+            'notifications' => $notifications,
+            'program' => $program
         ]);
     }
 }
