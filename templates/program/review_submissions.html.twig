@@ -19,30 +19,17 @@
 
 
 
-
-
-
-
-
-
-
-<div class="datatable-selector-container">
-    <label>Sort by Year:</label>
-    <ul>
-        <li>
-            <a href="{{ path('review_submissions', {'id': program.id}) }}">First Year</a>
-        </li>
-        <li>
-            <a href="{{ path('review_submissions', {'id': program.id}) }}">Second Year</a>
-        </li>
-        <li>
-            <a href="{{ path('review_submissions', {'id': program.id}) }}">Third Year</a>
-        </li>
-        <li>
-            <a href="{{ path('review_submissions', {'id': program.id}) }}">Fourth Year</a>
-        </li>
-    </ul>
-</div>
+    <form method="get">
+        <label for="sortingCriteria">Sort by:</label>
+        <select id="sortingCriteria" name="sort">
+            <option value="averageGrade" {% if sort == 'averageGrade' %}selected{% endif %}>Average Grade</option>
+            <option value="firstYear" {% if sort == 'firstYear' %}selected{% endif %}>First Year</option>
+            <option value="secondYear" {% if sort == 'secondYear' %}selected{% endif %}>Second Year</option>
+            <option value="thirdYear" {% if sort == 'thirdYear' %}selected{% endif %}>Third Year</option>
+            <option value="fourthYear" {% if sort == 'fourthYear' %}selected{% endif %}>Fourth Year</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
 
 
 
