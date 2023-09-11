@@ -12,17 +12,6 @@
     <main id="main" class="main">
     <div class="container">
 
-        <form method="get">
-            <label for="sortingCriteria">Sort by:</label>
-            <select id="sortingCriteria" name="sort">
-                <option value="averageGrade" {% if sort == 'averageGrade' %}selected{% endif %}>Average Grade</option>
-                <option value="firstYear" {% if sort == 'firstYear' %}selected{% endif %}>First Year</option>
-                <option value="secondYear" {% if sort == 'secondYear' %}selected{% endif %}>Second Year</option>
-                <option value="thirdYear" {% if sort == 'thirdYear' %}selected{% endif %}>Third Year</option>
-                <option value="fourthYear" {% if sort == 'fourthYear' %}selected{% endif %}>Fourth Year</option>
-            </select>
-            <button type="submit">Sort</button>
-        </form>
 
     <h1>Review Submissions for {{ program.title }}</h1>
 
@@ -45,10 +34,22 @@
             <div class="card">
                 <div class="card-body">
                 <!-- Table with stripped rows -->
-                <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns"><div class="datatable-top">
+                <h5 class="card-title">Review Submissions for {{ program.title }}</h5>
+                    <form method="get">
+                        <label for="sortingCriteria">Sort by:</label>
+                        <select id="sortingCriteria" name="sort">
+                            <option value="averageGrade" {% if sort == 'averageGrade' %}selected{% endif %}>Average Grade</option>
+                            <option value="firstYear" {% if sort == 'firstYear' %}selected{% endif %}>First Year</option>
+                            <option value="secondYear" {% if sort == 'secondYear' %}selected{% endif %}>Second Year</option>
+                            <option value="thirdYear" {% if sort == 'thirdYear' %}selected{% endif %}>Third Year</option>
+                            <option value="fourthYear" {% if sort == 'fourthYear' %}selected{% endif %}>Fourth Year</option>
+                        </select>
+                        <button type="submit">Sort</button>
+                    </form>
+                <div class="datatable-top">
 
         <div class="datatable-container">
-        <table class="table datatable datatable-table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>#</th>
