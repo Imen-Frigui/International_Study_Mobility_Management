@@ -1,8 +1,106 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Login{% endblock %}
+{% block header %}
 
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
 {% block body %}
+
+
+
+
+
+<main>
+    <div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <img src="{{ asset('asset1/img/Logo_ESPRIT_Ariana.jpg') }}" alt="">
+                  <span class="d-none d-lg-block">EspritMobility</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                    <p class="text-center small">Enter your username &amp; password to login</p>
+                  </div>
+
+                  <form class="row g-3 needs-validation" novalidate="" method="post" action="{{ path('student_login') }}" >
+                  {{ form_start(form) }}
+
+                    <div class="col-12">
+                      <label for="yourUsername" class="form-label">Identifiant</label>
+                      {{ form_widget(form.identifiant, {'attr': {'class': 'form-control', 'placeholder': 'Identifiant'}}) }}
+                      <div class="input-group has-validation">
+                        <div class="invalid-feedback">Please enter your Identifiant.</div>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">CIN</label>
+                      {{ form_widget(form.cin, {'attr': {'class': 'form-control', 'placeholder': 'CIN'}}) }}
+                      <div class="invalid-feedback">Please enter your CIN!</div>
+                    </div>
+
+                    <div class="col-12">
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                    </div>
+                    <div class="col-12">
+                    </div>
+                    {{ form_end(form) }}
+                  </form>
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- <h1>Login</h1>
 
     <form method="post">
@@ -10,32 +108,7 @@
 
         <button type="submit" class="btn btn-primary">Login</button>
     </form>-->
-    <main id="main" class="main">
 
-    <div class="card">
-            <div class="card-body" method="post">
-              <h5 class="card-title">Vertical Form</h5>
-
-              <!-- Vertical Form -->
-              <form method="post" action="{{ path('student_login') }}" class="row g-3">
-              {{ form_start(form) }}
-                <div class="col-12">
-
-                  <label for="inputNanme4" class="form-label">Your Name</label>
-                  {{ form_widget(form.identifiant, {'attr': {'class': 'form-control', 'placeholder': 'identifiant'}}) }}
-                </div>
-                <div class="col-12">
-                  <label for="inputEmail4" class="form-label">Email</label>
-                  {{ form_widget(form.cin, {'attr': {'class': 'form-control', 'placeholder': 'cin'}}) }}
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                        {{ form_end(form) }}
-              </form><!-- Vertical Form -->
-
-            </div>
-</div>
 {% endblock %}
 
 
