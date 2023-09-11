@@ -40,7 +40,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/review-submissions/{id}', name: 'review_submissions')]
-    public function reviewSubmissions(int $id, ProgramRepository $programRepository, ProgramSubmissionRepository $programSubmissionRepository): Response
+    public function reviewSubmissions(Request $request,int $id, ProgramRepository $programRepository, ProgramSubmissionRepository $programSubmissionRepository): Response
     {
         // Find the program
         $program = $programRepository->find($id);
@@ -49,20 +49,45 @@ class AdminController extends AbstractController
             throw $this->createNotFoundException('Program not found');
         }
     
-        // Fetch the submissions for this program
-        $submissions = $programSubmissionRepository->findBy(['program' => $program]);
-    
+                // Get the sorting parameter from the query string (default to 'averageGrade')
+            $sort = $request->query->get('sort', 'averageGrade');
+                // Fetch the submissions for this program
+                $submissions = $programSubmissionRepository->findBy(['program' => $program]);
+            // Sort the submissions based on the selected criteria
+            if ($sort === 'averageGrade') {
+                usort($submissions, function ($a, $b) {
+                    $averageGradeA = $a->getStudent()->getAverageGrade();
+                    $averageGradeB = $b->getStudent()->getAverageGrade();
+                    return $averageGradeB <=> $averageGradeA; // Descending order
+                });
+            } elseif ($sort === 'firstYear') {
+                // Sort based on first-year grade
+                // Implement your sorting logic here
+            } elseif ($sort === 'secondYear') {
+                // Sort based on second-year grade
+                // Implement your sorting logic here
+            } elseif ($sort === 'thirdYear') {
+                // Sort based on third-year grade
+                // Implement your sorting logic here
+            } elseif ($sort === 'fourthYear') {
+                // Sort based on fourth-year grade
+                // Implement your sorting logic here
+            }
+
+
+
         // Sort the submissions based on the average grade of the associated student
-        usort($submissions, function ($a, $b) {
-            $averageGradeA = $a->getStudent()->getAverageGrade();
-            $averageGradeB = $b->getStudent()->getAverageGrade();
-            return $averageGradeB <=> $averageGradeA; // Descending order
-        });
+      //  usort($submissions, function ($a, $b) {
+        //    $averageGradeA = $a->getStudent()->getAverageGrade();
+          //  $averageGradeB = $b->getStudent()->getAverageGrade();
+            //return $averageGradeB <=> $averageGradeA; // Descending order
+     //   });
     
         // Render a template to display the submissions
         return $this->render('program/review_submissions.html.twig', [
             'program' => $program,
             'submissions' => $submissions,
+            'sort' => $sort, 
         ]);
     }    
 
