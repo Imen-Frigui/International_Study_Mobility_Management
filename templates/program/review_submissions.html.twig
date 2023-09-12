@@ -65,11 +65,20 @@
                         <td>{{ submission.id }}</td>
                         <td>{{ submission.student.name }} {{ submission.student.lastName }}</td>
                         <td>
-                            <ul>
+                        <ul>
+                        {% for file in submission.programFiles %}
+                            <li>
+                                <a href="{{ path('admin_download_file', {'id': file.id}) }}">
+                                    <i class="fas fa-download"></i> {{ file.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                            {# <ul>
                                 {% for file in submission.programFiles %}
                                     <li>{{ file.name }}</li>
                                 {% endfor %}
-                            </ul>
+                            </ul> #}
                         </td>
                         <td>
                             {% if submission.status == 'pending' %}
