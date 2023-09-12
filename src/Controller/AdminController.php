@@ -12,6 +12,9 @@ use App\Entity\ProgramSubmission;
 use App\Form\ProgramType;
 use App\Repository\ProgramSubmissionRepository;
 use App\Repository\ProgramRepository;
+use App\Repository\ProgramFileRepository;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AdminController extends AbstractController
 {
@@ -180,4 +183,31 @@ class AdminController extends AbstractController
             'programData' => json_encode($programData)
         ]);
     }
+
+
+    #[Route('/admin/download-file/{id}', name: 'admin_download_file')]
+    public function downloadFile(int $id, ProgramFileRepository $programFileRepository, Filesystem $filesystem)
+    {
+        // Find the ProgramFile entity by its ID
+        $programFile = $programFileRepository->find($id);
+
+        if (!$programFile) {
+            throw $this->createNotFoundException('File not found');
+        }
+
+        // Get the absolute path to the file
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $programFile->getPath();
+
+        // Check if the file exists
+        if (!$filesystem->exists($filePath)) {
+            throw $this->createNotFoundException('File not found');
+        }
+
+        // Create a BinaryFileResponse to send the file for download
+        $response = new BinaryFileResponse($filePath);
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $programFile->getName() . '"');
+
+        return $response;
+    }
+
 }
