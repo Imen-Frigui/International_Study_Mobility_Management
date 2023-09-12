@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ProgramRepository;
 use App\Repository\StudentRepository;
 use App\Repository\NotificationRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Repository\ProgramSubmissionRepository;
 
 
 class ProgramSubmissionController extends AbstractController
@@ -28,7 +30,7 @@ class ProgramSubmissionController extends AbstractController
     }
 
     #[Route('/submit/{id}', name: 'program_submission')]
-    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, StudentRepository $studentRepository, NotificationRepository $notificationRepository): Response
+    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, StudentRepository $studentRepository, NotificationRepository $notificationRepository, ProgramSubmissionRepository $programSubmissionRepository): Response
     {
         // Find the program
         $program = $programRepository->find($id);
@@ -55,6 +57,15 @@ if (!$existingStudent) {
     $student = $existingStudent;
 }
 $entityManager->flush();
+
+
+    $existingSubmission = $programSubmissionRepository->findOneBy(['program' => $program, 'student' => $student]);
+
+    if ($existingSubmission) {
+        
+        $this->addFlash('warning', 'You have already submitted to this program !');
+        return new RedirectResponse($this->generateUrl('app_program_details', ['id' => $program->getId()]));
+    }
 
 
         $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);

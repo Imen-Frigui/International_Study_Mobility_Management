@@ -1,0 +1,116 @@
+
+def sessionID = null
+def guid = null
+def testStatus = ''
+
+pipeline {
+    agent any
+    stages{
+        stage ('TEST: StartSession') {
+          steps {
+                script {
+    				    def response = httpRequest acceptType: 'APPLICATION_JSON', 
+        					consoleLogResponseBody: true, 
+        					validResponseCodes: '100:500', 
+        					contentType: 'APPLICATION_JSON', 
+        					httpMode: 'POST', 
+        					requestBody: '''  {"username": "admin",  "password": "admin", "globalLogin": false}''', 
+        					url: 'http://host.docker.internal/QuerySurge/api/auth/login'
+        				                    
+                        //Get SessionID
+                        def slpr = new groovy.json.JsonSlurperClassic();
+                        json = slpr.parseText(response.content);
+                        sessionID = json.sessionId;
+                        println "SessionID: " + sessionID
+                 
+    				
+                }
+    
+          }
+        }//END Stage
+        stage ('TEST: ExecuteScenario') {
+          steps {
+                script{
+                        def response = httpRequest acceptType: 'APPLICATION_JSON', 
+                            contentType: 'APPLICATION_JSON', 
+                            customHeaders: [[maskValue: false, name: 'X-QS-AUTH', value: sessionID]], 
+                            httpMode: 'POST', 
+                            responseHandle: 'NONE', 
+                            url: 'http://host.docker.internal/QuerySurge/api/project/1/execute/suite/1?name=DevOps_Pipeline_Zcity&inherit=false&appendtime=true', 
+                            validResponseCodes: '100:500', 
+                            wrapAsMultipart: false
+        
+        			    //Get guid from response
+                        def slpr = new groovy.json.JsonSlurperClassic();
+                        json = slpr.parseText(response.content);
+                        guid = json.guid;
+                        println "guid: " + guid
+                
+                }
+          }
+        }// END stage
+        
+        stage ('TEST: GetResults') {
+          steps {
+                script{
+                        testStatus = "Not Run";
+                        while (testStatus == "Running" || testStatus == "Not Run"){
+                            get = new URL("http://host.docker.internal/QuerySurge/api/project/1/status/scenario/" + guid ).openConnection();
+                            get.setRequestMethod("GET")
+                            get.setDoOutput(true)
+                            get.setRequestProperty("accept", "application/json")
+                            get.setRequestProperty("X-QS-AUTH", sessionID)
+                            json = get.getInputStream().getText();
+                            //Parse Status
+                            slpr = new groovy.json.JsonSlurperClassic();
+                            response = slpr.parseText(json);
+                            testStatus = response.message;
+                            println "Scenario Status: " + testStatus;
+                    
+                            Thread.sleep(3000);
+                            
+                            //Cleanup
+                            get = null
+                            slpr = null
+                            
+                        }
+                        
+                        if(testStatus=="Passed"){
+                            currentBuild.result = 'SUCCESS'
+                        } else {
+                            currentBuild.result = 'FAILURE'
+                        }
+                        
+                }
+            }
+        }// END stage
+    }// END stages
+    post('POST: Post Build Actions'){
+      always {
+            echo 'Pipeline run complete: entering post actions'
+                script{
+                    def response = httpRequest customHeaders: [[maskValue: false, name: 'X-QS-AUTH', value: sessionID]], 
+                            httpMode: 'POST', 
+                            responseHandle: 'NONE', 
+                            url: 'http://host.docker.internal/QuerySurge/api/auth/logout', 
+                            validResponseCodes: '100:500', 
+                            wrapAsMultipart: false
+                        }
+                    echo 'QuerySurge API Session Ended: user logged out'    
+                
+            
+            
+        }
+            success{
+                //Move onto QA Deployment
+                echo 'Pipeline Passed'
+
+            }
+            failure{
+              //Initiate ROLLBACK Procedures
+                echo 'Pipeline Failed'                
+            }
+        }// END post
+
+}// END pipeline
+

@@ -105,6 +105,16 @@
 {% block body %}
 	<section id="blog" class="blog">
 		<div class="container aos-init aos-animate" data-aos="fade-up">
+			{% for flashMessage in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ flashMessage }}
+			</div>
+			{% endfor %}
+				{% for flashMessage in app.flashes('warning') %}
+				<div class="alert alert-success">
+					{{ flashMessage }}
+				</div>
+				{% endfor %}
 			<div class="row">
 				<div class="col-lg-8 entries">
 					{% for program in programs %}
