@@ -30,9 +30,11 @@ class ProgramSubmissionFormType extends AbstractType
         // Retrieve the documents associated with the program
         $documents = $this->documentRepository->findByProgram($programId);
 
+
         foreach ($documents as $document) {
+            $fieldName = 'document_' . $document->getId();
             // Add a file upload field for each document
-            $builder->add('document_' . $document->getId(), FileType::class, [
+            $builder->add($fieldName, FileType::class, [
                 'label' => $document->getName(), // Use the document name as the label
                 'required' => true,
                 'mapped' => false,
@@ -45,7 +47,7 @@ class ProgramSubmissionFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProgramSubmission::class, // Set the correct entity class
-            'programId' => null, // Default value for programId
+            'programId' => null,
         ]);
     }
 

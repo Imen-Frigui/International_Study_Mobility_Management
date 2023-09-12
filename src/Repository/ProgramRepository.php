@@ -54,6 +54,17 @@ class ProgramRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findDocumentIdsByProgram(Program $program)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('d.id')
+            ->join('p.documents', 'd')
+            ->where('p = :program')
+            ->setParameter('program', $program)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Program[] Returns an array of Program objects
 //     */

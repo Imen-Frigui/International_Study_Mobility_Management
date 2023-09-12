@@ -169,6 +169,22 @@ class Program
 
         return $this;
     }
+    
+    /**
+     * Get the document IDs associated with this program.
+     *
+     * @return array
+     */
+    public function getDocumentIds(): array
+    {
+        $documentIds = [];
+
+        foreach ($this->documents as $document) {
+            $documentIds[] = $document->getId();
+        }
+
+        return $documentIds;
+    }
 
 
 }

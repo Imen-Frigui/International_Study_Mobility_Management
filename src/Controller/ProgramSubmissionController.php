@@ -18,24 +18,29 @@ use App\Repository\StudentRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Repository\ProgramSubmissionRepository;
-
+use App\Repository\DocumentRepository;
 
 class ProgramSubmissionController extends AbstractController
 {
     private $fileUploader;
+    private DocumentRepository $documentRepository;
 
-    public function __construct(FileUploader $fileUploader)
+
+    public function __construct(FileUploader $fileUploader, DocumentRepository $documentRepository)
     {
         $this->fileUploader = $fileUploader;
+        $this->documentRepository = $documentRepository;
+
     }
 
+
     #[Route('/submit/{id}', name: 'program_submission')]
-    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, StudentRepository $studentRepository, NotificationRepository $notificationRepository, ProgramSubmissionRepository $programSubmissionRepository): Response
+    public function submissionForm(int $id, ProgramRepository $programRepository, Request $request, StudentRepository $studentRepository, NotificationRepository $notificationRepository, ProgramSubmissionRepository $programSubmissionRepository,DocumentRepository $documentRepository): Response
     {
         // Find the program
         $program = $programRepository->find($id);
         $entityManager = $this->getDoctrine()->getManager();
-        $documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
+        //$documents = $this->getDoctrine()->getRepository(Document::class)->findAll();
        // $student = $this->getDoctrine()->getRepository(Student::class)->find(1);
         $student = $this->get('session')->get('student');
 
@@ -47,25 +52,25 @@ class ProgramSubmissionController extends AbstractController
 
         // Explicitly persist the Program and Student entities
         
-$existingStudent = $studentRepository->findOneBy(['id' => $student->getId()]);
+        $existingStudent = $studentRepository->findOneBy(['id' => $student->getId()]);
 
-if (!$existingStudent) {
-    // If not, persist it
-    $entityManager->persist($student);
-} else {
-    // If the student already exists, update the $student variable
-    $student = $existingStudent;
-}
-$entityManager->flush();
+        if (!$existingStudent) {
+            // If not, persist it
+            $entityManager->persist($student);
+        } else {
+            // If the student already exists, update the $student variable
+            $student = $existingStudent;
+        }
+        $entityManager->flush();
 
 
-    $existingSubmission = $programSubmissionRepository->findOneBy(['program' => $program, 'student' => $student]);
+        $existingSubmission = $programSubmissionRepository->findOneBy(['program' => $program, 'student' => $student]);
 
-    if ($existingSubmission) {
-        
-        $this->addFlash('warning', 'You have already submitted to this program !');
-        return new RedirectResponse($this->generateUrl('app_program_details', ['id' => $program->getId()]));
-    }
+        if ($existingSubmission) {
+            
+            $this->addFlash('warning', 'You have already submitted to this program !');
+            return new RedirectResponse($this->generateUrl('app_program_details', ['id' => $program->getId()]));
+        }
 
 
         $notifications = $notificationRepository->findBy(['student' => $student, 'hasRead' => false]);
@@ -76,8 +81,11 @@ $entityManager->flush();
         $programSubmission->setStudent($student);
 
         $form = $this->createForm(ProgramSubmissionFormType::class, null, [
-            'programId' => $program->getId(),
+          'programId' => $program->getId(),
         ]);
+
+
+$documents = $this->documentRepository->findByProgram($program->getId());
 
         // Handle the form submission
         $form->handleRequest($request);
