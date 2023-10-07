@@ -1,8 +1,41 @@
-# International_Study_Mobility_Management
+# International Study Mobility Management
 
-## Description
-The context of the project revolves around the management of international study mobility. This entails facilitating the dissemination of international study mobility offers,
-collecting applications and their information, as well as the manual selection and nomination process. Currently, these processes are carried out manually, which can be timeconsuming, inefficient, and prone to errors. To address these challenges, the development of a platform for the management of international study mobility is proposed.
+This Symfony project manages international study mobility programs, applications, and nominations.
+
+## Prerequisites
+
+Before you can run this project locally, make sure you have the following prerequisites installed:
+
+- PHP 7.4 or higher
+- Composer (Dependency Manager for PHP)
+- Symfony CLI
+- MySQL or another supported database
+
+## Getting Started
+
+Follow these steps to set up and run the project locally:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Imen-Frigui/International_Study_Mobility_Management.git
+
+2. **Navigate to the project directory:**
+    ```bash
+    cd International_Study_Mobility_Management
+
+3. **Create a .env.local file in the project root and configure your database connection:**
+
+   ```bash
+    DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name
+   
+4. **Create the database and run migrations:**
+    ```bash
+    php bin/console doctrine:database:create
+    php bin/console doctrine:migrations:migrate
+
+5. **Start the Symfony development server:**
+    ```bash
+    symfony server:start
 
 ## Class Diagram
 ```mermaid
